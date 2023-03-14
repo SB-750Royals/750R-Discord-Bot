@@ -1,0 +1,2 @@
+[2023-03-14 18:56:26] [DEBUG   ] discord.client: on_ready has successfully been registered as an event
+[2023-03-14 18:56:26] [DEBUG   ] discord.client: on_message has successfully been registered as an event
