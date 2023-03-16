@@ -1,8 +1,9 @@
 import discord
-from datetime import datetime, timedelta
+from discord import app_commands
+
+from config import TOKEN
 
 timeouts = {}
-TOKEN = 'MTA2OTY3OTYzNjk3NzU0OTQzMg.GHkaTq.O9C43OOpL69wklXMs0NXzZlhBJL6YZgRU8_XEg'
 
 
 def run_discord_bot():
@@ -10,19 +11,11 @@ def run_discord_bot():
     intents = discord.Intents.default()
     intents.members = True
     client = discord.Client(intents=intents)
+    tree = app_commands.CommandTree(client)
 
     @client.event
     async def on_ready():
         print(f'{client.user} is now running!')
-
-    @client.event
-    async def on_message(message):
-        # Break up each part of the message
-        username = str(message.author)
-        user_message = str(message.content)
-        channel = str(message.channel)
-
-        if username != "750R#4477":
-            await message.channel.send("We are going to worlds!!")
+        await client.get_channel(1072221045718798406).send("<@915063961777500180> The bot is online")
 
     client.run(TOKEN)
