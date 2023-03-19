@@ -46,15 +46,25 @@
 
 ## Acknowledgements
 
-- [Awesome README](https://github.com/matiassingers/awesome-readme)
+- [readme.so](https://readme.so/)
 - [Discord.py](https://discordpy.readthedocs.io/en/stable/#)
-
 
 ## Contact 750R
 
 // Include contact info
 
 Email:
-Instagram: 
+Instagram:
 
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+`TOKEN`
+
+## Acknowledgements
+
+- [Awesome Readme Templates](https://awesomeopensource.com/project/elangosundar/awesome-README-templates)
+- [Readme.so](https://github.com/matiassingers/awesome-readme)
+- [How to write a Good readme](https://bulldogjob.com/news/449-how-to-write-a-good-readme-for-your-github-project)
 
