@@ -1,3 +1,5 @@
+import asyncio
+
 import discord
 from discord.ext import commands
 
@@ -10,57 +12,75 @@ if __name__ == '__main__':
     @client.event
     async def on_ready():
         print("Initializing bot...")
-        await client.change_presence(
-            activity=discord.Game(f'Latency: {(client.latency * 1000):.3f} ms'))
+        await client.change_presence(activity=discord.Game(f'Latency: {(client.latency * 1000):.3f} ms'))
         print("Bot initialized")
-
-        try:
-            synced = await client.tree.sync()
-            print(f'Synced {synced} commands')
-        except Exception as e:
-            print(f'Error syncing commands: {e}')
-        print("Commands Initialized")
-
         print('\n' * 100)
         print('Bot is ready!')
         print(f'Logged in as {client.user.name} (ID: {client.user.id})')
         print(f'Latency: {(client.latency * 1000):.3f} ms')
 
 
-    # Ping/Ping Commands
-    @client.tree.command(name='ping', description='Responds with the latency of the bot')
-    async def ping(interaction: discord.Interaction):
-        await interaction.response.send_message(f'Pong! Latency: {(client.latency * 1000):.3f} ms')
+    # Ping Command Groups
+    @client.slash_command(description="Sends the bot's latency.")  # this decorator makes a slash command
+    async def ping(ctx):  # a slash command will be created with the name "ping"
+        await ctx.respond(f"Pong! Latency is {client.latency}")
 
 
-    # Status commands
-    @client.command()  # TODO CREATE CUSTOM EMBED MESSAGE FOR PING MESSAGES
-    async def status(ctx):
-        ctx.message.content = ctx.message.content.rstrip().lstrip()
-        if len(ctx.message.content.lower()) > 128:
-            await ctx.send(f'{ctx.message.author.mention} status too long')
-        elif ctx.message.content[7:].lower() == ' online':
-            await client.change_presence(status=discord.Status.online)
-        elif ctx.message.content[7:].lower() == ' idle':
-            await client.change_presence(status=discord.Status.idle)
-        elif ctx.message.content[7:].lower() == ' dnd':
-            await client.change_presence(status=discord.Status.dnd)
-        elif ctx.message.content[7:].lower() == ' invisible':
-            await client.change_presence(status=discord.Status.invisible)
-        elif ctx.message.content[7:].lower() == ' ping':
+    # Status Command Group
+    status = client.create_group("status", "Change the bot's status")
+
+
+    @status.command(description="Sets the bot's status to online")
+    async def online(ctx, message: str):
+        await client.change_presence(status=discord.Status.online, activity=discord.Game(message))
+        await ctx.respond("Status set to Online with message: " + message)
+
+
+    @status.command(description="Sets the bot's status to idle")
+    async def idle(ctx, message: str):
+        await client.change_presence(status=discord.Status.idle, activity=discord.Game(message))
+        await ctx.respond("Status set to idle with message: " + message)
+
+
+    @status.command(description="Sets the bot's status to dnd")
+    async def dnd(ctx, message: str):
+        await client.change_presence(status=discord.Status.dnd, activity=discord.Game(message))
+        await ctx.respond("Status set to dnd with message: " + message)
+
+
+    @status.command(description="Sets the bot's status to invisible")
+    async def invisible(ctx, message: str):
+        await client.change_presence(status=discord.Status.invisible, activity=discord.Game(message))
+        await ctx.respond("Status set to invisible with message: " + message)
+
+
+    @status.command(description="Sets the bot's status to ping")
+    async def latency(ctx):
+        await client.change_presence(status=discord.Status.online,
+                                     activity=discord.Game(f"Latency is {client.latency}"))
+        await ctx.respond("Status set to ping")
+        while True:
             await client.change_presence(activity=discord.Game(f'Latency: {(client.latency * 1000):.3f} ms'))
-            await ctx.send(f'{ctx.message.author.mention} Latency: {(client.latency * 1000):.3f} ms')
-        elif ctx.message.content[7:].lower() == ' none':
-            await client.change_presence(activity=discord.Game(''))
-            await ctx.send(f'{ctx.message.author.mention} status changed to none')
-        elif ctx.message.content[7:].lower() == ' help' or ctx.message.content[7:].lower() == '':
-            await ctx.send(
-                f'{ctx.message.author.mention} Use !ping followed by one of the parameters to set the bot\'s status:\n\t  - online\n\t - idle\n\t - dnd\n\t - invisible\n\t - ping\n\t - none\n\t - or a custom status\nUse !ping help to see this message')
-        else:
-            await client.change_presence(activity=discord.Game(ctx.message.content[7:]))
-            await ctx.send(f'{ctx.message.author.mention} status changed to{ctx.message.content[7:]}')
+            await asyncio.sleep(60 * 60)
 
 
-    # Meeting Commands
+    @status.command(description="Clear the bots status")
+    async def none(ctx):
+        await client.change_presence(status=discord.Status.online, activity=discord.Game(""))
+        await ctx.respond("Status Cleared")
+
+
+    async def statusHelp(ctx):  # TODO CREATE CUSTOM EMBED MESSAGE FOR PING MESSAGES
+        await ctx.respond(
+            "Use !status followed by one of the parameters to set the bot's status:\n\t  - online\n\t - idle\n\t - dnd\n\t - invisible\n\t - ping\n\t - none\n\t - or a custom status\nUse !status help to see this message")
+
+
+    # Left off on: https://guide.pycord.dev/interactions/application-commands/slash-commands
+
+    # Meetings Command Group
+    # Attendance Command Group
+    # Spending's Command group
+    # Events Command Group
+    # Help Command Group
 
     client.run(config.TOKEN)
