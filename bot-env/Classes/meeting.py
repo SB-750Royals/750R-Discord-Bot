@@ -1,16 +1,17 @@
 class Meeting:
 
     # Initialize the meeting object
-    def __init__(self, location, startTime, endTime, supposedAttendees, description, importance, meetingType,
+    def __init__(self, location, startTime, endTime, date, supposedAttendees, description, importance, meetingType,
                  meetingID):
         # Custom variables
         self.meetingID = meetingID  # This is the meeting ID
         self.location = location  # Where is the meeting
-        self.startTime = startTime  # This is an epoch object
-        self.endTime = endTime  # This is an epoch object
+        self.startTime = startTime  # This is a string
+        self.endTime = endTime  # This is a string
+        self.date = date  # This is a string
         self.attendees = supposedAttendees  # Who is required to be there
         self.description = description  # What is the meeting about
-        self.importance = importance  # Fun, Normal, Required
+        self.importance = importance  # Fun (0), Normal (1), Required (2)
         self.meetingType = meetingType  # Research, Plan, Build, CAD, Programming, Driver, etc.
 
         # Calculated variables (These are calculated from the above variables)

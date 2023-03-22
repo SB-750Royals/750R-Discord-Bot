@@ -29,30 +29,25 @@ if __name__ == '__main__':
     # Status Command Group
     status = client.create_group("status", "Change the bot's status")
 
-
     @status.command(description="Sets the bot's status to online")
     async def online(ctx, message: str):
         await client.change_presence(status=discord.Status.online, activity=discord.Game(message))
         await ctx.respond("Status set to Online with message: " + message)
-
 
     @status.command(description="Sets the bot's status to idle")
     async def idle(ctx, message: str):
         await client.change_presence(status=discord.Status.idle, activity=discord.Game(message))
         await ctx.respond("Status set to idle with message: " + message)
 
-
     @status.command(description="Sets the bot's status to dnd")
     async def dnd(ctx, message: str):
         await client.change_presence(status=discord.Status.dnd, activity=discord.Game(message))
         await ctx.respond("Status set to dnd with message: " + message)
 
-
     @status.command(description="Sets the bot's status to invisible")
     async def invisible(ctx, message: str):
         await client.change_presence(status=discord.Status.invisible, activity=discord.Game(message))
         await ctx.respond("Status set to invisible with message: " + message)
-
 
     @status.command(description="Sets the bot's status to ping")
     async def latency(ctx):
@@ -62,7 +57,6 @@ if __name__ == '__main__':
         while True:
             await client.change_presence(activity=discord.Game(f'Latency: {(client.latency * 1000):.3f} ms'))
             await asyncio.sleep(60 * 60)
-
 
     @status.command(description="Clear the bots status")
     async def none(ctx):
@@ -78,6 +72,31 @@ if __name__ == '__main__':
     # Left off on: https://guide.pycord.dev/interactions/application-commands/slash-commands
 
     # Meetings Command Group
+    meetings = client.create_group("meetings", "meetings related commands")
+
+
+    @meetings.command(
+        description="Creates a new meeting")  # TODO: add options, add error handling, add custom embed, add permissions, create new meeting.py object, store to a file, add to a list, implement functionality
+    async def new(ctx, location: str, starttime: str, endtime: str, date: str, description: str, importance: int,
+                  meetingtype: str, meetingname: str):
+        await ctx.respond(
+            f"New meeting created at {location} from {starttime} to {endtime} with description {description} with importance {importance} of type {meetingtype} with name {meetingname} on the date {date}")
+
+
+    @meetings.command(
+        description="Edit an existing meeting")  # TODO: add options, add error handling, add custom embed, add permissions, create new meeting.py object, store to a file, add to a list
+    async def edit(ctx, meetingname: str, location: str, starttime: str, endtime: str, date: str, description: str,
+                   importance: int, meetingtype: str):
+        await ctx.respond(
+            f"Meeting {meetingname} edited to {location} from {starttime} to {endtime} with description {description} with importance {importance} of type {meetingtype} on the date {date}")
+
+
+    @meetings.command(
+        description="Delete an existing meeting")  # TODO: add options, add error handling, add custom embed, add permissions, create new meeting.py object, store to a file, add to a list, implement functionality
+    async def delete(ctx, meetingname: str):
+        await ctx.respond(f"Meeting {meetingname} deleted")
+
+
     # Attendance Command Group
     # Spending's Command group
     # Events Command Group
