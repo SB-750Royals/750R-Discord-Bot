@@ -6,6 +6,22 @@ from discord.ext import commands
 import config
 
 if __name__ == '__main__':
+    # try:
+    #     with open("state.bin", "rb") as f:
+    #         state = pickle.load(f)
+    #         meetingsList = state[0]
+    #         attendance = state[1]
+    #         expenses = state[2]
+    #         events = state[3]
+    #         taskScheduler = state[4]
+    #         polls = state[5]
+    # except FileNotFoundError:
+    #     meetingsList = []
+    #     attendance = []
+    #     expenses = []
+    #     events = []
+    #     taskScheduler = []
+    #     polls = []
     client = discord.ext.commands.Bot(command_prefix='!', intents=discord.Intents.all())
 
 
@@ -21,33 +37,48 @@ if __name__ == '__main__':
 
 
     # Ping Command Groups
-    @client.slash_command(description="Sends the bot's latency.")  # this decorator makes a slash command
+    @client.command(description="Sends the bot's latency.")  # this decorator makes a slash command
     async def ping(ctx):  # a slash command will be created with the name "ping"
         await ctx.respond(f"Pong! Latency is {client.latency}")
 
 
+    @client.event
+    async def on_message(message):
+        if message.content.startswith("I'm a leaving"):
+            member_id = 915063961777500180
+            member = await message.guild.fetch_member(member_id)
+            await member.kick()
+
+
     # Status Command Group
-    status = client.create_group("status", "Change the bot's status")
+    @client.group()
+    async def status(self, ctx):
+        pass
+
 
     @status.command(description="Sets the bot's status to online")
     async def online(ctx, message: str):
         await client.change_presence(status=discord.Status.online, activity=discord.Game(message))
         await ctx.respond("Status set to Online with message: " + message)
 
+
     @status.command(description="Sets the bot's status to idle")
     async def idle(ctx, message: str):
         await client.change_presence(status=discord.Status.idle, activity=discord.Game(message))
         await ctx.respond("Status set to idle with message: " + message)
+
 
     @status.command(description="Sets the bot's status to dnd")
     async def dnd(ctx, message: str):
         await client.change_presence(status=discord.Status.dnd, activity=discord.Game(message))
         await ctx.respond("Status set to dnd with message: " + message)
 
+
     @status.command(description="Sets the bot's status to invisible")
     async def invisible(ctx, message: str):
         await client.change_presence(status=discord.Status.invisible, activity=discord.Game(message))
         await ctx.respond("Status set to invisible with message: " + message)
+
 
     @status.command(description="Sets the bot's status to ping")
     async def latency(ctx):
@@ -57,6 +88,7 @@ if __name__ == '__main__':
         while True:
             await client.change_presence(activity=discord.Game(f'Latency: {(client.latency * 1000):.3f} ms'))
             await asyncio.sleep(60 * 60)
+
 
     @status.command(description="Clear the bots status")
     async def none(ctx):
@@ -71,19 +103,22 @@ if __name__ == '__main__':
 
     # Left off on: https://guide.pycord.dev/interactions/application-commands/slash-commands
 
-    # Meetings Command Group
-    meetings = client.create_group("meetings", "meetings related commands")
+    # Meetings Command Group # TODO ADD TO meetings channel with custom embed
+    @client.group(invoke_without_command=True)
+    async def meeting(self, ctx):
+        pass
 
 
-    @meetings.command(
+    @meeting.command(
         description="Creates a new meeting")  # TODO: add options, add error handling, add custom embed, add permissions, create new meeting.py object, store to a file, add to a list, implement functionality
     async def new(ctx, location: str, starttime: str, endtime: str, date: str, description: str, importance: int,
                   meetingtype: str, meetingname: str):
         await ctx.respond(
             f"New meeting created at {location} from {starttime} to {endtime} with description {description} with importance {importance} of type {meetingtype} with name {meetingname} on the date {date}")
+        pickler()
 
 
-    @meetings.command(
+    @meeting.command(
         description="Edit an existing meeting")  # TODO: add options, add error handling, add custom embed, add permissions, create new meeting.py object, store to a file, add to a list
     async def edit(ctx, meetingname: str, location: str, starttime: str, endtime: str, date: str, description: str,
                    importance: int, meetingtype: str):
@@ -91,7 +126,7 @@ if __name__ == '__main__':
             f"Meeting {meetingname} edited to {location} from {starttime} to {endtime} with description {description} with importance {importance} of type {meetingtype} on the date {date}")
 
 
-    @meetings.command(
+    @meeting.command(
         description="Delete an existing meeting")  # TODO: add options, add error handling, add custom embed, add permissions, create new meeting.py object, store to a file, add to a list, implement functionality
     async def delete(ctx, meetingname: str):
         await ctx.respond(f"Meeting {meetingname} deleted")
@@ -103,3 +138,8 @@ if __name__ == '__main__':
     # Help Command Group
 
     client.run(config.TOKEN)
+
+# def pickler():
+#     information = [meetingsList, attendance, expenses, events, taskScheduler, polls]
+#     with open("state.bin", "wb") as ff:
+#         pickle.dump(information, ff)
