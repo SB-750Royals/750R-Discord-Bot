@@ -11,7 +11,6 @@ if __name__ == '__main__':
     prfx = (Back.LIGHTBLACK_EX + Fore.GREEN + time.strftime("%H:%M:%S EST",
                                                             time.localtime()) + Back.RESET + Fore.WHITE + Style.BRIGHT + " ")
 
-
     @client.event
     async def on_ready():
         # Initialization
@@ -20,14 +19,32 @@ if __name__ == '__main__':
         print(prfx + "Status set to: " + Fore.YELLOW + f'Latency: {(client.latency * 1000):.3f} ms' + Fore.WHITE)
 
         # Initialize Slash Commands
-        await client.load_extension("slashcmds.SlashStatus")
         client.tree.copy_global_to(guild=client.get_guild(config.SERVER_750R))
+        await client.load_extension("slashcmds.SlashStatus")
+        await client.load_extension("slashcmds.SlashPing")
         await client.tree.sync(guild=client.get_guild(config.SERVER_750R))
         print(prfx + "Slash commands synced" + Fore.WHITE)
 
         # Post Initialization
         print(prfx + "Bot initialized" + Fore.YELLOW + client.user.name + Fore.WHITE + " is ready!")
         print(prfx + f'Latency: {(client.latency * 1000):.3f} ms')
+
+
+    # TODO ORGANIZE COMMANDS INTO SEPARATE FILES
+    @client.event
+    async def on_message(message):
+        if message.author == client.user:
+            return
+        elif message.content.lower() == "hello all":
+            await message.channel.send("HELLO ALL!")
+        elif message.content.lower() == "hello":
+            await message.channel.send("Hello!")
+        elif message.content.lower() == "hi":
+            await message.channel.send("Hi!")
+        elif message.content.lower() == "hey":
+            await message.content.send("Hey!")
+        elif message.content.lower() == "hey all":
+            await message.content("Hey all!")
 
 
     @client.command(aliases=["stop", "exit", "quit", "abort"])
@@ -48,31 +65,5 @@ if __name__ == '__main__':
             print(prfx + "Bot has been shut down.")
             exit()
 
-
-    @client.tree.command(name="ping", description="Sends the bot's latency")
-    async def ping(interaction):
-        print(f'Pong! Latency is {client.latency}')
-        await interaction.response.send_message(
-            f"{interaction.user.mention} Latency is {round(client.latency * 1000, 2)} ms", ephemeral=True)
-
-
-    # Asynch Listener for messages
-    @client.event
-    async def on_message(message):
-        if message.author == client.user:
-            return
-        elif message.content.lower() == "hello all":
-            await message.channel.send("HELLO ALL!")
-        elif message.content.lower() == "hello":
-            await message.channel.send("Hello!")
-        elif message.content.lower() == "hi":
-            await message.channel.send("Hi!")
-        elif message.content.lower() == "hey":
-            await message.content.send("Hey!")
-        elif message.content.lower() == "hey all":
-            await message.content("Hey all!")
-
-
     client.run(config.TOKEN)
 
-# Merge Conflict Test
