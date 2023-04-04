@@ -4,9 +4,24 @@ from discord import app_commands
 import config
 
 
+# TODO Improve Output Message
+# TODO Implement Permission Checks
+
+
+def checkPermissions(interaction):
+    guild = interaction.guild
+    member = guild.get_member(interaction.user.id)
+    role = discord.utils.get(guild.roles, id=940086503466500117)
+    if role in member.roles:
+        return True
+    else:
+        return False
+
+
 class StatusGroup(app_commands.Group):
 
     @app_commands.command(name="online", description="Set the bot's status to online")
+    # @app_commands.check(checkPermissions)
     async def online(self, interaction, message: str):
         embed = discord.Embed(title=f'{discord.utils.escape_markdown(interaction.user.display_name)} Used /status',
                               color=discord.Color.gold())

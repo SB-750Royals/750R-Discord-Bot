@@ -4,9 +4,10 @@ from discord import app_commands
 import config
 
 
+# TODO Improve Output Message
+
 class PingGroup(app_commands.Group):
 
-    # TODO CREATE EMBED FOR PING MESSAGE
     @app_commands.command()
     async def ping(self, interaction):
         embed = discord.Embed(title=f'{discord.utils.escape_markdown(interaction.user.display_name)} Used /ping',

@@ -19,6 +19,9 @@ if __name__ == '__main__':
         print(prfx + "Status set to: " + Fore.YELLOW + f'Latency: {(client.latency * 1000):.3f} ms' + Fore.WHITE)
 
         # Initialize Slash Commands
+        # TODO Make these commands only work in the 750R server
+        # TODO Make specific commands work in DMs
+
         client.tree.copy_global_to(guild=client.get_guild(config.SERVER_750R))
         await client.load_extension("slashcmds.SlashStatus")
         await client.load_extension("slashcmds.SlashPing")

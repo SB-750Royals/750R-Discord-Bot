@@ -1,26 +1,25 @@
+import time
+
+
 class Meeting:
 
-    # Initialize the meeting object
-    def __init__(self, location, startTime, endTime, date, supposedAttendees, description, importance, meetingType,
-                 meetingID):
-        # Custom variables
-        self.meetingID = meetingID  # This is the meeting ID
-        self.location = location  # Where is the meeting
-        self.startTime = startTime  # This is a string
-        self.endTime = endTime  # This is a string
-        self.date = date  # This is a string
-        self.attendees = supposedAttendees  # Who is required to be there
-        self.description = description  # What is the meeting about
-        self.importance = importance  # Fun (0), Normal (1), Required (2)
-        self.meetingType = meetingType  # Research, Plan, Build, CAD, Programming, Driver, etc.
+    def __init__(self, location, startTime, endTime, date, supposedAttendees, description, importance, meetingType):
+        self.location = location
+        self.startTime = startTime
+        self.endTime = endTime
+        self.date = date
+        self.attendees = supposedAttendees
+        self.description = description
+        self.importance = importance
+        self.meetingType = meetingType
 
-        # Calculated variables (These are calculated from the above variables)
+        self.meetingID = int(time.time())
         self.actualAttendees = []
         self.meetingNotes = "blank"
-        self.adminApproval = False  # This is a boolean that is set to true when the admin approves the meeting
-        self.pictureStatus = False  # This is a boolean that is set to true when the admin approves the pictures
-        self.cleanUpStatus = False  # This is a boolean that is set to true when the admin approves the cleanup
-        self.meetingNotesStatus = False  # This is a boolean that is set to true when the admin approves the meeting notes
+        self.adminApproval = False
+        self.pictureStatus = False
+        self.cleanUpStatus = False
+        self.meetingNotesStatus = False
         self.duration = self.endTime - self.startTime
 
     def __delete__(self, instance):
