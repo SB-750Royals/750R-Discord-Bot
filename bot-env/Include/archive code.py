@@ -28,10 +28,9 @@
 import asyncio
 import pickle
 
+import config
 import discord
 import discord.ext.commands
-
-import config
 
 if __name__ == '__main__':
 

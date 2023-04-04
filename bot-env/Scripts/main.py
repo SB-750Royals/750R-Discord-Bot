@@ -20,7 +20,9 @@ if __name__ == '__main__':
         print(prfx + "Status set to: " + Fore.YELLOW + f'Latency: {(client.latency * 1000):.3f} ms' + Fore.WHITE)
 
         # Initialize Slash Commands
-        await client.tree.sync()
+        await client.load_extension("slashcmds.SlashStatus")
+        client.tree.copy_global_to(guild=client.get_guild(config.SERVER_750R))
+        await client.tree.sync(guild=client.get_guild(config.SERVER_750R))
         print(prfx + "Slash commands synced" + Fore.WHITE)
 
         # Post Initialization
