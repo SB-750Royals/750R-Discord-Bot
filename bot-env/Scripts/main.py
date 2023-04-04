@@ -23,10 +23,11 @@ if __name__ == '__main__':
         await client.load_extension("slashcmds.SlashStatus")
         await client.load_extension("slashcmds.SlashPing")
         await client.tree.sync(guild=client.get_guild(config.SERVER_750R))
+        await client.tree.sync()
         print(prfx + "Slash commands synced" + Fore.WHITE)
 
         # Post Initialization
-        print(prfx + "Bot initialized" + Fore.YELLOW + client.user.name + Fore.WHITE + " is ready!")
+        print(prfx + "Bot initialized " + Fore.YELLOW + client.user.name + Fore.WHITE + " is ready!")
         print(prfx + f'Latency: {(client.latency * 1000):.3f} ms')
 
 

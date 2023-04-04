@@ -8,7 +8,8 @@ class StatusGroup(app_commands.Group):
 
     @app_commands.command(name="online", description="Set the bot's status to online")
     async def online(self, interaction, message: str):
-        embed = discord.Embed(title="User Status Changed", color=discord.Color.green())
+        embed = discord.Embed(title=f'{discord.utils.escape_markdown(interaction.user.display_name)} Used /status',
+                              color=discord.Color.gold())
         embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
         embed.add_field(name="New Status", value=str(discord.Status.online).capitalize(), inline=False)
         embed.add_field(name="New Message", value=message, inline=False)
@@ -20,7 +21,8 @@ class StatusGroup(app_commands.Group):
 
     @app_commands.command(name="offline", description="Set the bot's status to offline")
     async def idle(self, interaction, message: str):
-        embed = discord.Embed(title="User Status Changed", color=discord.Color.green())
+        embed = discord.Embed(title=f'{discord.utils.escape_markdown(interaction.user.display_name)} Used /status',
+                              color=discord.Color.gold())
         embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
         embed.add_field(name="New Status", value=str(discord.Status.idle).capitalize(), inline=False)
         embed.add_field(name="New Message", value=message, inline=False)
@@ -32,7 +34,8 @@ class StatusGroup(app_commands.Group):
 
     @app_commands.command(name="dnd", description="Set the bot's status to dnd")
     async def dnd(self, interaction, message: str):
-        embed = discord.Embed(title="User Status Changed", color=discord.Color.green())
+        embed = discord.Embed(title=f'{discord.utils.escape_markdown(interaction.user.display_name)} Used /status',
+                              color=discord.Color.gold())
         embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
         embed.add_field(name="New Status", value=str(discord.Status.dnd).capitalize(), inline=False)
         embed.add_field(name="New Message", value=message, inline=False)
@@ -44,7 +47,8 @@ class StatusGroup(app_commands.Group):
 
     @app_commands.command(name="invisible", description="Set the bot's status to invisible")
     async def invisible(self, interaction):
-        embed = discord.Embed(title="User Status Changed", color=discord.Color.green())
+        embed = discord.Embed(title=f'{discord.utils.escape_markdown(interaction.user.display_name)} Used /status',
+                              color=discord.Color.gold())
         embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
         embed.add_field(name="New Status", value=str(discord.Status.invisible).capitalize(), inline=False)
 
@@ -58,7 +62,8 @@ class StatusGroup(app_commands.Group):
         if interaction.client.status == discord.Status.invisible: await interaction.client.change_presence(
             status=discord.Status.online)
 
-        embed = discord.Embed(title="User Status Changed", color=discord.Color.green())
+        embed = discord.Embed(title=f'{discord.utils.escape_markdown(interaction.user.display_name)} Used /status',
+                              color=discord.Color.gold())
         embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
         embed.add_field(name="New Status", value=str(interaction.client.status).capitalize(), inline=False)
         embed.add_field(name="New Message", value="Latency", inline=False)

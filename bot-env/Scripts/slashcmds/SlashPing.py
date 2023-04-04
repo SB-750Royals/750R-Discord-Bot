@@ -6,9 +6,11 @@ import config
 
 class PingGroup(app_commands.Group):
 
+    # TODO CREATE EMBED FOR PING MESSAGE
     @app_commands.command()
     async def ping(self, interaction):
-        embed = discord.Embed(title="Ping Command Used", color=discord.Color.green())
+        embed = discord.Embed(title=f'{discord.utils.escape_markdown(interaction.user.display_name)} Used /ping',
+                              color=discord.Color.gold())
         embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
         embed.add_field(name="Latency", value=f"{round(interaction.client.latency * 1000, 2)} ms", inline=False)
 
