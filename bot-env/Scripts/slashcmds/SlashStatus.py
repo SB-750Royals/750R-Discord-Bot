@@ -91,4 +91,4 @@ class StatusGroup(app_commands.Group):
 
 
 async def setup(client):
-    client.tree.add_command(StatusGroup(name="status", description="Sets the bot's status"))
+    client.tree.add_command(StatusGroup(name="status", description="bot status commands"))

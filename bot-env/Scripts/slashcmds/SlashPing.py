@@ -8,7 +8,7 @@ import config
 
 class PingGroup(app_commands.Group):
 
-    @app_commands.command()
+    @app_commands.command(name="ping", description="displays the bot's latency")
     async def ping(self, interaction):
         embed = discord.Embed(title=f'{discord.utils.escape_markdown(interaction.user.display_name)} Used /ping',
                               color=discord.Color.gold())
@@ -22,4 +22,4 @@ class PingGroup(app_commands.Group):
 
 
 async def setup(client):
-    client.tree.add_command(PingGroup(name="ping", description="Pings the bot"))
+    client.tree.add_command(PingGroup(name="ping", description="bot ping commands"))
