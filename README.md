@@ -9,8 +9,6 @@
 ## Authors
 
 - [Vignesh Saravanakumar](https://github.com/vigneshsaravanakumar404)
-- [Mayank Deores](https://github.com/mayankd101)
-- [Anika Thakur](https://github.com/anikat2)
 
 
 
