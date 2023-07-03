@@ -9,6 +9,7 @@
 ## Authors
 
 - [Vignesh Saravanakumar](https://github.com/vigneshsaravanakumar404)
+- [Tejas Raghuram](https://github.com/TejasRaghuram)
 
 
 
