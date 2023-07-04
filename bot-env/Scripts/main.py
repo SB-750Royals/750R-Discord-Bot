@@ -7,6 +7,8 @@ from discord.ext import commands
 import config
 
 if __name__ == '__main__':
+
+    # Initialize bot
     client = commands.Bot(command_prefix='!', intents=discord.Intents.all())
     prfx = (Back.LIGHTBLACK_EX + Fore.GREEN + time.strftime("%H:%M:%S EST",
                                                             time.localtime()) + Back.RESET + Fore.WHITE + Style.BRIGHT + " ")
@@ -31,19 +33,16 @@ if __name__ == '__main__':
         await client.load_extension("slashcmds.SlashMeeting")
         await client.load_extension("slashcmds.SlashDev")
 
+        # Initilalize Slash Commands
         await client.tree.sync(guild=client.get_guild(config.SERVER_750R))
         await client.tree.sync()
         print(prfx + "Slash commands synced" + Fore.WHITE)
 
-        # Post Initialization
+        # Post Initialization Messages
         print(prfx + "Bot initialized " + Fore.YELLOW + client.user.name + Fore.WHITE + " is ready!")
         print(prfx + f'Latency: {(client.latency * 1000):.3f} ms')
-
-        # TODO: Create an Embed for this message
         await client.get_guild(703694008345559130).get_channel(1082361625073434636).send(
-            f"Bot is online at {time.strftime('%H:%M:%S EST', time.localtime())}")
-
-        await client.get_channel(1032762061521952898).send("32")
+            f"Bot is online at {time.strftime('%H:%M:%S EST', time.localtime())}")  # TODO: Create embed
 
 
     # Text matching commands
