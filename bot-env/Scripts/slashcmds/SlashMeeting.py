@@ -1,26 +1,84 @@
-import discord
+import time
+
 from discord import app_commands
 
+meetings = []
 
-# TODO Implement Permission Checks
 
 class MeetingGroup(app_commands.Group):
 
-    @app_commands.command(description="Creates a meeting")
-    @app_commands.choices(meetingTypes=[
-        discord.app_commands.Choice(name="Build", value=1),
-        discord.app_commands.Choice(name="Programming", value=2),
-        discord.app_commands.Choice(name="CAD", value=3),
-        discord.app_commands.Choice(name="Website", value=4),
-        discord.app_commands.Choice(name="Notebook", value=5),
-        discord.app_commands.Choice(name="Plan", value=6),
-        discord.app_commands.Choice(name="Full Team", value=7),
-        discord.app_commands.Choice(name="Team Bonding", value=8),
-        discord.app_commands.Choice(name="Other", value=9)
-    ])
-    async def create(self, interaction, meetingType: discord.app_commands.Choice[int]):
-        await interaction.response.send_message("Meeting created", ephemeral=True)
+    @app_commands.command(name="new", description="Create a new meeting")
+    async def new(self, interaction, location: str, date: str, starttime: int, endtime: int, supposedattendees: str,
+                  description: str):
+        meetings.append(Meeting(location, date, starttime, endtime, supposedattendees, description))
+        await interaction.response.send_message("Meeting Created", ephemeral=True)
 
 
 async def setup(client):
-    client.tree.add_command(MeetingGroup(name="meeting", description=""))
+    client.tree.add_command(MeetingGroup(name="meeting", description="meeting commands"))
+
+
+class Meeting:
+
+    def __init__(self, location, date, startTime, endTime, supposedAttendees, description):
+        self.location = location
+        self.date = date
+        self.startTime = startTime
+        self.endTime = endTime
+        self.attendees = supposedAttendees
+        self.description = description
+
+        self.meetingID = int(time.time())
+        self.actualAttendees = []
+        self.meetingNotes = "blank"
+        self.adminApproval = False
+        self.pictureStatus = False
+        self.cleanUpStatus = False
+        self.meetingNotesStatus = False
+        self.duration = self.endTime - self.startTime
+
+    # Create getter methods for each attribute
+    def getLocation(self):
+        return self.location
+
+    def getDate(self):
+        return self.date
+
+    def getStartTime(self):
+        return self.startTime
+
+    def getEndTime(self):
+        return self.endTime
+
+    def getAttendees(self):
+        return self.attendees
+
+    def getDescription(self):
+        return self.description
+
+    def getMeetingID(self):
+        return self.meetingID
+
+    def getActualAttendees(self):
+        return self.actualAttendees
+
+    def getMeetingNotes(self):
+        return self.meetingNotes
+
+    def getAdminApproval(self):
+        return self.adminApproval
+
+    def getPictureStatus(self):
+        return self.pictureStatus
+
+    def getCleanUpStatus(self):
+        return self.cleanUpStatus
+
+    def getMeetingNotesStatus(self):
+        return self.meetingNotesStatus
+
+    def getDuration(self):
+        return self.duration
+
+    def __delete__(self, instance):
+        del self
