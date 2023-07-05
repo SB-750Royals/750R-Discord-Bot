@@ -59,7 +59,7 @@ if __name__ == '__main__':
         elif message.content.lower() == "hey":
             await message.content.send("Hey!")
         elif message.content.lower() == "hey all":
-            await message.content("Hey all!")
+            await message.content("hihi!")
         elif message.content.lower() == "hihi":
             await message.content.send("Hihi!")
         elif message.content.lower().find("boba") != -1:
@@ -68,3 +68,4 @@ if __name__ == '__main__':
 
 
     client.run(config.TOKEN)
+
