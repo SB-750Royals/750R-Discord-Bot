@@ -4,7 +4,11 @@ from discord import app_commands
 import config
 
 
-# TODO Improve Output Message
+# TODO: Create embeds for commands
+# TODO: Only allow certain people to use these commands
+# TODO: Only allow commands to work in 750R server
+# TODO: Create modlog embeds for commands
+
 
 class PingGroup(app_commands.Group):
 

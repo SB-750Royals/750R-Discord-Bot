@@ -23,7 +23,6 @@ if __name__ == '__main__':
         print(prfx + "Status set to: " + Fore.YELLOW + f'Latency: {(client.latency * 1000):.3f} ms' + Fore.WHITE)
 
         # Initialize Slash Commands
-        # TODO Make these commands only work in the 750R server
         # TODO Make specific commands work in DMs
         client.tree.copy_global_to(guild=client.get_guild(config.SERVER_750R))
 
@@ -36,6 +35,7 @@ if __name__ == '__main__':
         # Initilalize Slash Commands
         await client.tree.sync(guild=client.get_guild(config.SERVER_750R))
         await client.tree.sync()
+
         print(prfx + "Slash commands synced" + Fore.WHITE)
 
         # Post Initialization Messages
@@ -60,27 +60,11 @@ if __name__ == '__main__':
             await message.content.send("Hey!")
         elif message.content.lower() == "hey all":
             await message.content("Hey all!")
-        elif "boba" in message.content.lower():
+        elif message.content.lower() == "hihi":
+            await message.content.send("Hihi!")
+        elif message.content.lower().find("boba") != -1:
             await message.add_reaction("🧋")
 
 
-    # create a slash command called "stop" that will shut down the bot
-    @client.command(description="Shuts down the bot")
-    async def stop(ctx):
-        if ctx.author.id != 915063961777500180:
-            await ctx.send("You do not have permission to use this command")
-            return
-        else:
-
-            embed = discord.Embed(  # TODO: Improve Embed
-                title=f"{client.user.name} is shutting down",
-                description=f"Current time is {time.strftime('%H:%M:%S EST', time.localtime())}",
-                color=discord.Color.green()
-            )
-            embed.set_footer(text=f"Authorization from {ctx.author.name}")
-            await ctx.send(embed=embed)
-            await client.close()
-            print(prfx + "Bot has been shut down.")
-            exit()
 
     client.run(config.TOKEN)

@@ -1,21 +1,70 @@
+import pickle
 import time
+from datetime import datetime
 
 from discord import app_commands
 
-meetings = []
+# Load meetings from file
+try:
+    with open("meetings.pkl", "rb") as file:
+        meetings = pickle.load(file)
+except FileNotFoundError:
+    meetings = []
 
+
+# TODO: Create embeds for commands
+# TODO: Only allow certain people to use these commands
+# TODO: Only allow commands to work in 750R server
+# TODO: Create modlog embeds for commands
 
 class MeetingGroup(app_commands.Group):
 
-    @app_commands.command(name="new", description="Create a new meeting")
-    async def new(self, interaction, location: str, date: str, starttime: int, endtime: int, supposedattendees: str,
+    # TODO: add roles/people as option to supposedattendees
+
+    async def new(self, interaction, location: str, date: str, starttime: str, endtime: str, supposedattendees: str,
                   description: str):
+
+        # Check inputs and set default values
+        if starttime == "":
+            starttime = "16:00:00"
+        if endtime == "":
+            endtime = "18:00:00"
+        if description == "":
+            description = "Standard meeting"
+        if location == "":
+            location = "23 Aster WayDayton, NJ 08810"
+        if date == "" or supposedattendees == "":
+            await interaction.response.send_message("Fill in the date/people attending", ephemeral=True)
+            return
+
+        # Check if the date and time are valid
+        try:
+            date_obj = datetime.strptime(date, '%d-%m-%Y')
+            start_time_obj = datetime.strptime(starttime, '%d-%m-%Y %H:%M:%S')
+            end_time_obj = datetime.strptime(endtime, '%d-%m-%Y %H:%M:%S')
+
+            meetings.append(Meeting(location, date_obj, start_time_obj, end_time_obj, supposedattendees, description))
+
+        except ValueError:
+            await interaction.response.send_message(
+                "Invalid date or time format. Please provide the date in the format DD-MM-YYYY and time in the format DD-MM-YYYY HH:MM:SS.",
+                ephemeral=True)
+            return
+
         meetings.append(Meeting(location, date, starttime, endtime, supposedattendees, description))
-        await interaction.response.send_message("Meeting Created", ephemeral=True)
+        with open("meetings.pkl", "wb") as file1:
+            pickle.dump(meetings, file1)
+
+        # reply to user with meeting ID
+        await interaction.response.send_message(f"Meeting created with ID {meetings[-1].getMeetingID()}",
+                                                ephemeral=True)
+
+        # TODO: CREATE MESSAGE IN MEETING LOGS CHANNEL
+        # TODO: make that message upadte in realtime with changes to meeting
 
 
 async def setup(client):
-    client.tree.add_command(MeetingGroup(name="meeting", description="meeting commands"))
+    client.tree.add_command(MeetingGroup(name="meetingss", description="meeting commandss"))
 
 
 class Meeting:

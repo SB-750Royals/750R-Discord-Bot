@@ -1,6 +1,11 @@
 from discord import app_commands
 
 
+# TODO: Create embeds for commands
+# TODO: Only allow certain people to use these commands
+# TODO: Create modlog embeds for commands
+
+
 class DevGroup(app_commands.Group):
 
     @app_commands.command(name="exit", description="Terminates the bot")
@@ -8,7 +13,6 @@ class DevGroup(app_commands.Group):
         await interaction.client.get_guild(703694008345559130).get_channel(1082361625073434636).send(
             "Bot is shutting down")
         await interaction.response.send_message("Bot is shutting down")
-
         await interaction.client.close()
 
 
