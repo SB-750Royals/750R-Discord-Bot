@@ -1,6 +1,7 @@
 import discord
 from discord import app_commands
 
+
 # Server
 SERVER_750R = 703694008345559130
 
