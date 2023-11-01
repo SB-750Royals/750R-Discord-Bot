@@ -86,15 +86,15 @@ if __name__ == '__main__':
         if message.author == client.user:
             return
         elif message.content.lower() == "hello all":
-            await message.channel.send("HELLO ALL!")
+            await message.reply("Hello!")
         elif message.content.lower() == "hello":
-            await message.channel.send("Hello!")
+            await message.reply("Hello!")
         elif message.content.lower() == "hi":
-            await message.channel.send("Hi!")
+            await message.reply("Hi!")
         elif message.content.lower() == "hey":
-            await message.content.send("Hey!")
+            await message.reply("Hey!")
         elif message.content.lower() == "hey all":
-            await message.channel.send("HEY ALL!")
+            await message.reply("HEY ALL!")
         elif message.content.lower().find("boba") != -1:
             await message.add_reaction("🧋")
             await message.add_reaction("🟰")
@@ -103,7 +103,7 @@ if __name__ == '__main__':
             await message.add_reaction("🧙")
             await message.add_reaction("🪄")
             await message.add_reaction("🔴")
-            message = await message.channel.send("Protego!")
+            message = await message.reply("Protego!")
             await message.add_reaction("🧙")
             await message.add_reaction("🪄")
             await message.add_reaction("🟣")
@@ -123,7 +123,18 @@ if __name__ == '__main__':
             await message.add_reaction("🧙")
             await message.add_reaction("🪄")
             await message.add_reaction("🔵")
+        elif message.content.lower().find("wingardium leviosa") != -1:
+            await message.add_reaction("🧙")
+            await message.add_reaction("🪄")
+            await message.add_reaction("🪶")
+        elif message.content.lower().find("lumos") != -1:
+            await message.add_reaction("🧙")
+            await message.add_reaction("🪄")
+            await message.add_reaction("🔦")
+        elif client.user.mentioned_in(message):
+            await message.add_reaction("👀")
         
+
 
 
 
