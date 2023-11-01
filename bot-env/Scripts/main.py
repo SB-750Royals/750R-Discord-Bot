@@ -80,6 +80,11 @@ if __name__ == '__main__':
             f"{client.user.name} is ready!")
         print(prfx + "Bot initialized, ready for use" + Fore.WHITE)
 
+        # Set bot's name
+        await client.user.edit(username="Teju")
+        with open("assets/image.png", "rb") as f:
+            await client.user.edit(avatar=f.read())
+
 
     @client.event
     async def on_message(message):
@@ -133,7 +138,14 @@ if __name__ == '__main__':
             await message.add_reaction("🔦")
         elif client.user.mentioned_in(message):
             await message.add_reaction("👀")
-        
+        # Send image of tejas
+        elif message.content.lower().find("tej") != -1:
+            with open("assets/image.png", "rb") as f:
+                await message.channel.send(file=discord.File(f))
+        # Send image of monkey
+        elif message.content.lower().find("monkey") != -1:
+            with open("assets\macaca_nigra_self-portrait-3e0070aa19a7fe36e802253048411a38f14a79f8-s1100-c50.jpg", "rb") as f:
+                await message.channel.send(file=discord.File(f))
 
 
 
