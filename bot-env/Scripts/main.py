@@ -1,4 +1,5 @@
 import discord
+import config
 
 from colorama import Fore, Style, Back
 from discord.ext import commands
@@ -6,7 +7,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from datetime import timedelta, datetime, time
 
-import config
+
 
 if __name__ == '__main__':
 
@@ -31,7 +32,7 @@ if __name__ == '__main__':
     
     async def availibilities():
         print("Running weekly task")
-        channel = client.get_channel(703713168807035020) 
+        channel = client.get_channel(config.BOT_LOGS_750R) 
 
         start_of_week, end_of_week = get_week_duration()
         message_content = (
@@ -83,7 +84,7 @@ if __name__ == '__main__':
         # Post Initialization Messages
         print(prfx + "Bot initialized " + Fore.YELLOW + client.user.name + Fore.WHITE + " is ready!")
         print(prfx + f'Latency: {(client.latency * 1000):.3f} ms')
-        await client.get_guild(703694008345559130).get_channel(1082361625073434636).send(
+        await client.get_guild(config.SERVER_750R).get_channel(config.CHANNEL_MODLOGS_750R).send(
             f"{client.user.name} is ready!")
         
 

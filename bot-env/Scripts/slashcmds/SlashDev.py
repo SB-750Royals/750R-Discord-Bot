@@ -5,6 +5,11 @@ from discord.ext import commands  # Import the commands extension
 # TODO: Only allow certain people to use these commands
 # TODO: Create modlog embeds for commands
 
+
+"""
+Developer Commands
+
+"""
 class DevGroup(app_commands.Group):
 
     @app_commands.command(name="exit", description="Terminates the bot")
