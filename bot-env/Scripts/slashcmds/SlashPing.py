@@ -3,13 +3,6 @@ from discord import app_commands
 
 import config
 
-
-# TODO: Create embeds for commands
-# TODO: Only allow certain people to use these commands
-# TODO: Only allow commands to work in 750R server
-# TODO: Create modlog embeds for commands
-
-
 class PingGroup(app_commands.Group):
 
     @app_commands.command(name="ping", description="displays the bot's latency")
