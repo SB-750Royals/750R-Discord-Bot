@@ -58,6 +58,8 @@ if __name__ == '__main__':
         await client.load_extension("slashcmds.SlashStatus")
         await client.load_extension("slashcmds.SlashPing")
         await client.load_extension("slashcmds.SlashDev")
+        await client.load_extension("slashcmds.SlashAttendance")
+        await client.load_extension("slashcmds.SlashAssignment")
 
         # Initilalize Slash Commands
         await client.tree.sync(guild=client.get_guild(config.SERVER_750R))
@@ -145,6 +147,4 @@ if __name__ == '__main__':
             await message.add_reaction("👀")
         
 
-
     client.run(config.TOKEN)
-
