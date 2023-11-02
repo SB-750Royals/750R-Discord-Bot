@@ -4,14 +4,11 @@
 
 # 750R Discord Bot
 
-// Include brief description of the project
 
 ## Authors
 
 - [Vignesh Saravanakumar](https://github.com/vigneshsaravanakumar404)
-- [Mayank Deores](https://github.com/mayankd101)
-- [Anika Thakur](https://github.com/anikat2)
-
+- [Tejas Raghuram](https://github.com/TejasRaghuram)
 
 
 ## Team 750R
@@ -22,49 +19,17 @@
 
 ## Features
 
-- Attendance Sign up Integration
-- Meeting scheduler with location/date/time/Attendance
-- Meeting Reminders
-- Keeps track of Attendance
-- Built in Expense Tracker
-- Event Creator
-- Reminders
-## Documentation
 
-// Document Commands
+## Command Documentation
 
 
 ## Demo
 
-// Demo gifs/video
 
-
-## License
-
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
-
-
-## Acknowledgements
-
-- [readme.so](https://readme.so/)
-- [Discord.py](https://discordpy.readthedocs.io/en/stable/#)
-
-## Contact 750R
-
-// Include contact info
-
-Email:
-Instagram:
-
-## Environment Variables
-
-To run this project, you will need to add the following environment variables to your .env file
-
-`TOKEN`
 
 ## Acknowledgements
 
 - [Awesome Readme Templates](https://awesomeopensource.com/project/elangosundar/awesome-README-templates)
 - [Readme.so](https://github.com/matiassingers/awesome-readme)
-- [How to write a Good readme](https://bulldogjob.com/news/449-how-to-write-a-good-readme-for-your-github-project)
 
+## Contact 750R
