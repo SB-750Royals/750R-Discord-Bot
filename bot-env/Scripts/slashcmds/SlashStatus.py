@@ -50,6 +50,7 @@ class StatusGroup(app_commands.Group):
                 embed=embed)
             await interaction.client.change_presence(status=discord.Status.online, activity=discord.Game(name=message))
             await interaction.response.send_message(f"Status set to Online with message: {message}", ephemeral=True)
+
         
 
     @app_commands.command(name="offline", description="Set the bot's status to offline")
