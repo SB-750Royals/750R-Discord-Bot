@@ -6,6 +6,7 @@ from discord.ext import commands
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from datetime import timedelta, datetime, time
+from slashcmds import SlashCommandTree
 
 
 if __name__ == '__main__':
@@ -18,6 +19,11 @@ if __name__ == '__main__':
 
     
     async def availibilities():
+        """
+        Sends a message to the designated channel with a message containing the availabilities for the current week.
+        The message includes a mention to a specific role and a date range for the current week.
+        The message also includes instructions to react with the days the user is available.
+        """
         print("Running weekly task")
         channel = client.get_channel(config.BOT_LOGS_750R) 
 
@@ -29,8 +35,8 @@ if __name__ == '__main__':
         # Set the time to 12:00am for Monday and 11:59pm for Saturday
         start_of_week, end_of_week = int( datetime.combine(last_monday, time()).timestamp()), int(datetime.combine(next_saturday, time(23, 59)).timestamp())
         message_content = (
-        f"<@&940086503466500117> Availabilities for <t:{start_of_week}:D> - <t:{end_of_week}:D> "
-        "Availabilities for this week. You are required to attend 1 meeting and the full team "
+        f"<@&{config.ROLE_TEAMS_750R}> Availabilities for <t:{start_of_week}:D> - <t:{end_of_week}:D> "
+        "Availabilities for this week. You are required to attend 1 meeting and the full team"
         "meeting on Friday. React with which days you are coming."
         )
 
@@ -42,8 +48,16 @@ if __name__ == '__main__':
         await msg.add_reaction("🇫")
         await msg.add_reaction("🇸")
 
+
+    client = commands.Bot(command_prefix=config.PREFIX, intents=discord.Intents.all())
+    client.tree = SlashCommandTree(client)
+
     @client.event
     async def on_ready():
+        """
+        This function is called when the bot is ready to start working.
+        It initializes the bot, sets its status, loads and syncs slash commands, starts a weekly task, and sets the bot's name and avatar.
+        """
 
         # Initialization
         print(prfx + "Initializing bot..." + Fore.WHITE)
@@ -57,7 +71,6 @@ if __name__ == '__main__':
         # Load Slash Command extensions
         await client.load_extension("slashcmds.SlashStatus")
         await client.load_extension("slashcmds.SlashPing")
-        await client.load_extension("slashcmds.SlashMeeting")
         await client.load_extension("slashcmds.SlashDev")
 
         # Initilalize Slash Commands
@@ -71,7 +84,7 @@ if __name__ == '__main__':
         scheduler = AsyncIOScheduler()
         scheduler.add_job(availibilities, CronTrigger(day_of_week='wed', hour=9, minute=7))
         scheduler.start()
-        
+            
 
         # Post Initialization Messages
         print(prfx + "Bot initialized " + Fore.YELLOW + client.user.name + Fore.WHITE + " is ready!")
@@ -146,8 +159,6 @@ if __name__ == '__main__':
         elif message.content.lower().find("monkey") != -1:
             with open("assets\macaca_nigra_self-portrait-3e0070aa19a7fe36e802253048411a38f14a79f8-s1100-c50.jpg", "rb") as f:
                 await message.channel.send(file=discord.File(f))
-
-
 
 
     client.run(config.TOKEN)

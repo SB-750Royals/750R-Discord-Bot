@@ -19,7 +19,7 @@ class PingGroup(app_commands.Group):
         embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
         embed.add_field(name="Latency", value=f"{round(interaction.client.latency * 1000, 2)} ms", inline=False)
 
-        await interaction.client.get_guild(703694008345559130).get_channel(config.CHANNEL_MODLOGS_750R).send(
+        await interaction.client.get_guild(config.SERVER_750R).get_channel(config.CHANNEL_MODLOGS_750R).send(
             embed=embed)
         await interaction.response.send_message(
             f"{interaction.user.mention} Latency is {round(interaction.client.latency * 1000, 2)} ms", ephemeral=True)
