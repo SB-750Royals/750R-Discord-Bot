@@ -76,12 +76,6 @@ if __name__ == '__main__':
         await client.change_presence(activity=discord.Game(f'Latency: {(client.latency * 1000):.3f} ms'))
         print(prfx + "Status set to: " + Fore.YELLOW + f'Latency: {(client.latency * 1000):.3f} ms' + Fore.WHITE)
 
-
-    # Ping Command Groups
-    @client.add_command(description="Sends the bot's latency.")  # this decorator makes a slash command
-    async def ping(ctx):  # a slash command will be created with the name "ping"
-        await ctx.respond(f"Pong! Latency is {client.latency}")
-
         # Load Slash Command extensions
         await client.load_extension("slashcmds.SlashStatus")
         await client.load_extension("slashcmds.SlashPing")
@@ -110,7 +104,7 @@ if __name__ == '__main__':
         print(prfx + "Bot initialized, ready for use" + Fore.WHITE)
 
         # Set bot's name
-        await client.user.edit(username="Teju")
+        await client.user.edit(username="750Royals")
         with open("assets/image.png", "rb") as f:
             await client.user.edit(avatar=f.read())
 
