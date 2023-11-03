@@ -1,23 +1,80 @@
-import asyncio
+from datetime import timedelta, datetime, time
 
 import discord
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.triggers.cron import CronTrigger
+from colorama import Fore, Style, Back
 from discord.ext import commands
 
 import config
 
 if __name__ == '__main__':
-    client = discord.ext.commands.Bot(command_prefix='!', intents=discord.Intents.all())
+
+    # Initialize bot
+    client = commands.Bot(command_prefix='!', intents=discord.Intents.all())
+    current_time = datetime.now()
+    time_string = current_time.strftime("%H:%M:%S EST")
+    prfx = (Back.LIGHTBLACK_EX + Fore.GREEN + time_string + Back.RESET + Fore.WHITE + Style.BRIGHT + " ")
+
+
+    async def availibilities():
+
+        # Initialize    
+        channel = client.get_channel(config.CHANNEL_BOTLOGS_750R)
+        now = datetime.utcnow()
+        last_monday = now - timedelta(days=now.weekday())
+        next_saturday = last_monday + timedelta(days=5)
+
+        # Create Message
+        start_of_week, end_of_week = int(datetime.combine(last_monday, time()).timestamp()), int(
+            datetime.combine(next_saturday, time(23, 59)).timestamp())
+        message_content = (
+            f"<@&{config.ROLE_TEAMS_750R}> Availabilities for <t:{start_of_week}:D> - <t:{end_of_week}:D> "
+            "Availabilities for this week. You are required to attend 1 meeting and the full team"
+            "meeting on Friday. React with which days you are coming."
+        )
+        msg = await channel.send(message_content)
+
+        # TODO: Implement logic to check if there are no availibilities for the week
+        # Add reactions
+        with open("assets/AvailibilitiesData.JSON", "r") as file:
+            data = file.read()
+            if data != "null":
+                data = eval(data)
+                for day in data["days"]:
+                    if day == "m":
+                        await msg.add_reaction("🇲")
+                    elif day == "t":
+                        await msg.add_reaction("🇹")
+                    elif day == "w":
+                        await msg.add_reaction("🇼")
+                    elif day == "r":
+                        await msg.add_reaction("🇷")
+                    elif day == "f":
+                        await msg.add_reaction("🇫")
+                    elif day == "s":
+                        await msg.add_reaction("🇸")
+                    elif day == "u":
+                        await msg.add_reaction("🇺")
+            else:
+                await msg.add_reaction("🇲")
+                await msg.add_reaction("🇹")
+                await msg.add_reaction("🇼")
+                await msg.add_reaction("🇷")
+                await msg.add_reaction("🇫")
+                await msg.add_reaction("🇸")
+                await msg.add_reaction("🇺")
+            with open("assets/AvailibilitiesData.JSON", "w") as file:
+                file.write("null")
 
 
     @client.event
     async def on_ready():
-        print("Initializing bot...")
+
+        # Initialization
+        print(prfx + "Initializing bot..." + Fore.WHITE)
         await client.change_presence(activity=discord.Game(f'Latency: {(client.latency * 1000):.3f} ms'))
-        print("Bot initialized")
-        print('\n' * 100)
-        print('Bot is ready!')
-        print(f'Logged in as {client.user.name} (ID: {client.user.id})')
-        print(f'Latency: {(client.latency * 1000):.3f} ms')
+        print(prfx + "Status set to: " + Fore.YELLOW + f'Latency: {(client.latency * 1000):.3f} ms' + Fore.WHITE)
 
 
     # Ping Command Groups
@@ -25,81 +82,97 @@ if __name__ == '__main__':
     async def ping(ctx):  # a slash command will be created with the name "ping"
         await ctx.respond(f"Pong! Latency is {client.latency}")
 
+        # Load Slash Command extensions
+        await client.load_extension("slashcmds.SlashStatus")
+        await client.load_extension("slashcmds.SlashPing")
+        await client.load_extension("slashcmds.SlashDev")
+        await client.load_extension("slashcmds.SlashAvailibilities")
+        # await client.load_extension("slashcmds.SlashAttendance")
+        # await client.load_extension("slashcmds.SlashAssignment")
 
-    # Status Command Group
-    status = client.create_group("status", "Change the bot's status")
+        # Initilalize Slash Commands
+        await client.tree.sync(guild=client.get_guild(config.SERVER_750R))
+        await client.tree.sync()
 
-    @status.command(description="Sets the bot's status to online")
-    async def online(ctx, message: str):
-        await client.change_presence(status=discord.Status.online, activity=discord.Game(message))
-        await ctx.respond("Status set to Online with message: " + message)
+        print(prfx + "Slash commands synced" + Fore.WHITE)
 
-    @status.command(description="Sets the bot's status to idle")
-    async def idle(ctx, message: str):
-        await client.change_presence(status=discord.Status.idle, activity=discord.Game(message))
-        await ctx.respond("Status set to idle with message: " + message)
+        # Start weekly task
+        scheduler = AsyncIOScheduler()
+        scheduler.add_job(availibilities, CronTrigger(day_of_week='sun', hour=9, minute=0))
+        scheduler.start()
+        
 
-    @status.command(description="Sets the bot's status to dnd")
-    async def dnd(ctx, message: str):
-        await client.change_presence(status=discord.Status.dnd, activity=discord.Game(message))
-        await ctx.respond("Status set to dnd with message: " + message)
+        # Post Initialization Messages
+        print(prfx + "Bot initialized " + Fore.YELLOW + client.user.name + Fore.WHITE + " is ready!")
+        print(prfx + f'Latency: {(client.latency * 1000):.3f} ms')
+        await client.get_guild(config.SERVER_750R).get_channel(config.CHANNEL_MODLOGS_750R).send(
+            f"{client.user.name} is ready!")
+        print(prfx + "Bot initialized, ready for use" + Fore.WHITE)
 
-    @status.command(description="Sets the bot's status to invisible")
-    async def invisible(ctx, message: str):
-        await client.change_presence(status=discord.Status.invisible, activity=discord.Game(message))
-        await ctx.respond("Status set to invisible with message: " + message)
-
-    @status.command(description="Sets the bot's status to ping")
-    async def latency(ctx):
-        await client.change_presence(status=discord.Status.online,
-                                     activity=discord.Game(f"Latency is {client.latency}"))
-        await ctx.respond("Status set to ping")
-        while True:
-            await client.change_presence(activity=discord.Game(f'Latency: {(client.latency * 1000):.3f} ms'))
-            await asyncio.sleep(60 * 60)
-
-    @status.command(description="Clear the bots status")
-    async def none(ctx):
-        await client.change_presence(status=discord.Status.online, activity=discord.Game(""))
-        await ctx.respond("Status Cleared")
+        # Set bot's name
+        await client.user.edit(username="Teju")
+        with open("assets/image.png", "rb") as f:
+            await client.user.edit(avatar=f.read())
 
 
-    async def statusHelp(ctx):  # TODO CREATE CUSTOM EMBED MESSAGE FOR PING MESSAGES
-        await ctx.respond(
-            "Use !status followed by one of the parameters to set the bot's status:\n\t  - online\n\t - idle\n\t - dnd\n\t - invisible\n\t - ping\n\t - none\n\t - or a custom status\nUse !status help to see this message")
-
-
-    # Left off on: https://guide.pycord.dev/interactions/application-commands/slash-commands
-
-    # Meetings Command Group
-    meetings = client.create_group("meetings", "meetings related commands")
-
-
-    @meetings.command(
-        description="Creates a new meeting")  # TODO: add options, add error handling, add custom embed, add permissions, create new meeting.py object, store to a file, add to a list, implement functionality
-    async def new(ctx, location: str, starttime: str, endtime: str, date: str, description: str, importance: int,
-                  meetingtype: str, meetingname: str):
-        await ctx.respond(
-            f"New meeting created at {location} from {starttime} to {endtime} with description {description} with importance {importance} of type {meetingtype} with name {meetingname} on the date {date}")
-
-
-    @meetings.command(
-        description="Edit an existing meeting")  # TODO: add options, add error handling, add custom embed, add permissions, create new meeting.py object, store to a file, add to a list
-    async def edit(ctx, meetingname: str, location: str, starttime: str, endtime: str, date: str, description: str,
-                   importance: int, meetingtype: str):
-        await ctx.respond(
-            f"Meeting {meetingname} edited to {location} from {starttime} to {endtime} with description {description} with importance {importance} of type {meetingtype} on the date {date}")
-
-
-    @meetings.command(
-        description="Delete an existing meeting")  # TODO: add options, add error handling, add custom embed, add permissions, create new meeting.py object, store to a file, add to a list, implement functionality
-    async def delete(ctx, meetingname: str):
-        await ctx.respond(f"Meeting {meetingname} deleted")
-
-
-    # Attendance Command Group
-    # Spending's Command group
-    # Events Command Group
-    # Help Command Group
+    @client.event
+    async def on_message(message):
+        if message.author == client.user:
+            return
+        elif message.content.lower() == "hello all":
+            await message.reply("Hello!")
+        elif message.content.lower() == "hello":
+            await message.reply("Hello!")
+        elif message.content.lower() == "hi":
+            await message.reply("Hi!")
+        elif message.content.lower() == "hey all":
+            await message.reply("HEY ALL!")
+        elif message.content.lower().find("boba") != -1:
+            await message.add_reaction("🧋")
+            await message.add_reaction("🟰")
+            await message.add_reaction("👎🏿")
+        elif message.content.lower().find("expelliarmus") != -1:
+            await message.add_reaction("🧙")
+            await message.add_reaction("🪄")
+            await message.add_reaction("🔴")
+            message = await message.reply("Protego!")
+            await message.add_reaction("🧙")
+            await message.add_reaction("🪄")
+            await message.add_reaction("🟣")
+        elif message.content.lower().find("avada kedavra") != -1:
+            await message.add_reaction("🧙")
+            await message.add_reaction("🪄")
+            await message.add_reaction("🟢")
+        elif message.content.lower().find("crucio") != -1:
+            await message.add_reaction("🧙")
+            await message.add_reaction("🪄")
+            await message.add_reaction("🟡")
+        elif message.content.lower().find("imperio") != -1:
+            await message.add_reaction("🧙")
+            await message.add_reaction("🪄")
+            await message.add_reaction("🟠")
+        elif message.content.lower().find("stupefy") != -1:
+            await message.add_reaction("🧙")
+            await message.add_reaction("🪄")
+            await message.add_reaction("🔵")
+        elif message.content.lower().find("wingardium leviosa") != -1:
+            await message.add_reaction("🧙")
+            await message.add_reaction("🪄")
+            await message.add_reaction("🪶")
+        elif message.content.lower().find("lumos") != -1:
+            await message.add_reaction("🧙")
+            await message.add_reaction("🪄")
+            await message.add_reaction("🔦")
+        elif message.content.lower().find("tej") != -1:
+            with open("assets/image.png", "rb") as f:
+                await message.channel.send(file=discord.File(f))
+        elif message.content.lower().find("monkey") != -1:
+            with open("assets\macaca_nigra_self-portrait-3e0070aa19a7fe36e802253048411a38f14a79f8-s1100-c50.jpg", "rb") as f:
+                await message.channel.send(file=discord.File(f))
+        elif message.content.lower().find("bye") != -1:
+            await message.channel.send("bye")
+        elif client.user.mentioned_in(message):
+            await message.add_reaction("👀")
+        
 
     client.run(config.TOKEN)

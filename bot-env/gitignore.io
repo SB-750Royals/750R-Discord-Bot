@@ -1,0 +1,1 @@
+Scripts/slashcmds/config.py
