@@ -1,7 +1,6 @@
 import discord
 from discord import app_commands
 
-
 # Server
 SERVER_750R = 703694008345559130
 
@@ -41,7 +40,7 @@ class StatusGroup(app_commands.Group):
             return
         else:
             embed = discord.Embed(title=f'{discord.utils.escape_markdown(interaction.user.display_name)} Used /status',
-                              color=discord.Color.gold())
+                                  color=discord.Color.gold())
             embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
             embed.add_field(name="New Status", value=str(discord.Status.online).capitalize(), inline=False)
             embed.add_field(name="New Message", value=message, inline=False)
@@ -50,8 +49,6 @@ class StatusGroup(app_commands.Group):
                 embed=embed)
             await interaction.client.change_presence(status=discord.Status.online, activity=discord.Game(name=message))
             await interaction.response.send_message(f"Status set to Online with message: {message}", ephemeral=True)
-
-        
 
     @app_commands.command(name="offline", description="Set the bot's status to offline")
     async def idle(self, interaction, message: str):
@@ -70,7 +67,7 @@ class StatusGroup(app_commands.Group):
             return
         else:
             embed = discord.Embed(title=f'{discord.utils.escape_markdown(interaction.user.display_name)} Used /status',
-                              color=discord.Color.gold())
+                                  color=discord.Color.gold())
             embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
             embed.add_field(name="New Status", value=str(discord.Status.idle).capitalize(), inline=False)
             embed.add_field(name="New Message", value=message, inline=False)
@@ -79,7 +76,6 @@ class StatusGroup(app_commands.Group):
                 embed=embed)
             await interaction.client.change_presence(status=discord.Status.idle, activity=discord.Game(name=message))
             await interaction.response.send_message(f"Status set to idle with message: {message}", ephemeral=True)
-        
 
     @app_commands.command(name="dnd", description="Set the bot's status to dnd")
     async def dnd(self, interaction, message: str):
@@ -98,7 +94,7 @@ class StatusGroup(app_commands.Group):
             return
         else:
             embed = discord.Embed(title=f'{discord.utils.escape_markdown(interaction.user.display_name)} Used /status',
-                                color=discord.Color.gold())
+                                  color=discord.Color.gold())
             embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
             embed.add_field(name="New Status", value=str(discord.Status.dnd).capitalize(), inline=False)
             embed.add_field(name="New Message", value=message, inline=False)
@@ -124,7 +120,7 @@ class StatusGroup(app_commands.Group):
             return
         else:
             embed = discord.Embed(title=f'{discord.utils.escape_markdown(interaction.user.display_name)} Used /status',
-                                color=discord.Color.gold())
+                                  color=discord.Color.gold())
             embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
             embed.add_field(name="New Status", value=str(discord.Status.invisible).capitalize(), inline=False)
 
@@ -148,10 +144,10 @@ class StatusGroup(app_commands.Group):
             await interaction.response.send_message("You do not have permission to use this command.", ephemeral=True)
             return
         else:
-            if interaction.client.status == discord.Status.invisible: 
+            if interaction.client.status == discord.Status.invisible:
                 await interaction.client.change_presence(status=discord.Status.online)
             embed = discord.Embed(title=f'{discord.utils.escape_markdown(interaction.user.display_name)} Used /status',
-                                color=discord.Color.gold())
+                                  color=discord.Color.gold())
             embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
             embed.add_field(name="New Status", value=str(interaction.client.status).capitalize(), inline=False)
             embed.add_field(name="New Message", value="Latency", inline=False)

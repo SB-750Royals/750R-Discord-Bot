@@ -3,6 +3,7 @@ from discord import app_commands
 
 import config
 
+
 class AvailibilitiesGroup(app_commands.Group):
 
     @app_commands.command(name="set-next-week", description="Determine which days are available for next week")
@@ -26,9 +27,8 @@ class AvailibilitiesGroup(app_commands.Group):
 
         await interaction.client.get_guild(config.SERVER_750R).get_channel(config.CHANNEL_MODLOGS_750R).send(
             embed=embed)
-        
+
         await interaction.response.send_message(f"Set next week's availibilities to {days}", ephemeral=True)
-        
 
 
 async def setup(client):

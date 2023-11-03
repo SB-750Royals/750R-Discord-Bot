@@ -13,7 +13,7 @@
 #     async def attendees(self, interaction):
 #         pass
 
-#     # Use API to get attendance of the person who used the command from google sheets
+#     # Use API to get attendance of the person who used the command from Google sheets
 #     @app_commands.command(name="show", description="shows the attendance of the person who used the command")
 #     async def show(self, interaction):
 #         pass

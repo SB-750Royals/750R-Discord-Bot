@@ -94,7 +94,6 @@ if __name__ == '__main__':
         scheduler = AsyncIOScheduler()
         scheduler.add_job(availibilities, CronTrigger(day_of_week='sun', hour=9, minute=0))
         scheduler.start()
-        
 
         # Post Initialization Messages
         print(prfx + "Bot initialized " + Fore.YELLOW + client.user.name + Fore.WHITE + " is ready!")
@@ -105,7 +104,9 @@ if __name__ == '__main__':
 
         # Set bot's name
         await client.user.edit(username="750Royals")
-        with open("assets/image.png", "rb") as f:
+        with open(
+                r"C:\Users\Vigne\OneDrive\Documents\Programing Master\Python\Github Projects\750R-Discord-Bot\assets\teju.png",
+                "rb") as f:
             await client.user.edit(avatar=f.read())
 
 
@@ -158,15 +159,19 @@ if __name__ == '__main__':
             await message.add_reaction("🪄")
             await message.add_reaction("🔦")
         elif message.content.lower().find("tej") != -1:
-            with open("assets/image.png", "rb") as f:
+            with open(
+                    r"C:\Users\Vigne\OneDrive\Documents\Programing Master\Python\Github Projects\750R-Discord-Bot\assets\teju.png",
+                    "rb") as f:
                 await message.channel.send(file=discord.File(f))
         elif message.content.lower().find("monkey") != -1:
-            with open("assets\macaca_nigra_self-portrait-3e0070aa19a7fe36e802253048411a38f14a79f8-s1100-c50.jpg", "rb") as f:
+            with open(
+                    r"C:\Users\Vigne\OneDrive\Documents\Programing Master\Python\Github Projects\750R-Discord-Bot\assets\macaca_nigra_self-portrait-3e0070aa19a7fe36e802253048411a38f14a79f8-s1100-c50.jpg",
+                    "rb") as f:
                 await message.channel.send(file=discord.File(f))
         elif message.content.lower().find("bye") != -1:
             await message.channel.send("bye")
         elif client.user.mentioned_in(message):
             await message.add_reaction("👀")
-        
+
 
     client.run(config.TOKEN)

@@ -3,6 +3,7 @@ from discord import app_commands
 
 import config
 
+
 class PingGroup(app_commands.Group):
 
     @app_commands.command(name="ping", description="displays the bot's latency")
