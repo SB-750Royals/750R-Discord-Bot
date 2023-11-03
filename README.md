@@ -8,7 +8,9 @@
 ## Authors
 
 - [Vignesh Saravanakumar](https://github.com/vigneshsaravanakumar404)
-- [Tejas Raghuram](https://github.com/TejasRaghuram)
+- [Mayank Deores](https://github.com/mayankd101)
+- [Anika Thakur](https://github.com/anikat2)
+
 
 
 ## Team 750R

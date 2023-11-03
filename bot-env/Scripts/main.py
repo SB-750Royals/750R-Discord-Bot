@@ -76,9 +76,11 @@ if __name__ == '__main__':
         await client.change_presence(activity=discord.Game(f'Latency: {(client.latency * 1000):.3f} ms'))
         print(prfx + "Status set to: " + Fore.YELLOW + f'Latency: {(client.latency * 1000):.3f} ms' + Fore.WHITE)
 
-        # Initialize Slash Commands
-        # TODO Make specific commands work in DMs
-        client.tree.copy_global_to(guild=client.get_guild(config.SERVER_750R))
+
+    # Ping Command Groups
+    @client.add_command(description="Sends the bot's latency.")  # this decorator makes a slash command
+    async def ping(ctx):  # a slash command will be created with the name "ping"
+        await ctx.respond(f"Pong! Latency is {client.latency}")
 
         # Load Slash Command extensions
         await client.load_extension("slashcmds.SlashStatus")
