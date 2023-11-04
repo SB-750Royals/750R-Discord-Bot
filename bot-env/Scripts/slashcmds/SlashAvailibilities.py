@@ -16,7 +16,9 @@ class AvailibilitiesGroup(app_commands.Group):
             days = None
 
         # Clear all data in assets\AvailibilitiesData.JSON and write the new data
-        with open("assets/AvailibilitiesData.JSON", "w") as file:
+        with open(
+                r"C:\Users\Vigne\OneDrive\Documents\Programing Master\Python\Github Projects\750R-Discord-Bot\assets\macaca_nigra_self-portrait-3e0070aa19a7fe36e802253048411a38f14a79f8-s1100-c50.jpg",
+                "w") as file:
             file.write(f'{{"days": {days}}}')
 
         # Send a message to the modlogs channel

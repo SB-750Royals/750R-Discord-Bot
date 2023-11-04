@@ -81,10 +81,10 @@ if __name__ == '__main__':
         await client.load_extension("slashcmds.SlashPing")
         await client.load_extension("slashcmds.SlashDev")
         await client.load_extension("slashcmds.SlashAvailibilities")
-        # await client.load_extension("slashcmds.SlashAttendance")
+        await client.load_extension("slashcmds.SlashAttendance")
         # await client.load_extension("slashcmds.SlashAssignment")
 
-        # Initilalize Slash Commands
+        # Initilalize Slash (Uncomment to sync slash commands, comment when no changes to avoid rate limit)
         await client.tree.sync(guild=client.get_guild(config.SERVER_750R))
         await client.tree.sync()
 
@@ -98,16 +98,20 @@ if __name__ == '__main__':
         # Post Initialization Messages
         print(prfx + "Bot initialized " + Fore.YELLOW + client.user.name + Fore.WHITE + " is ready!")
         print(prfx + f'Latency: {(client.latency * 1000):.3f} ms')
-        await client.get_guild(config.SERVER_750R).get_channel(config.CHANNEL_MODLOGS_750R).send(
-            f"{client.user.name} is ready!")
+        embed = discord.Embed(title=f'{client.user.name} is ready!',
+                              color=discord.Color.gold())
+        embed.set_author(name=client.user.display_name, icon_url=client.user.avatar.url)
+        embed.add_field(name="Latency", value=f"{(client.latency * 1000):.3f} ms", inline=False)
+        await client.get_guild(config.SERVER_750R).get_channel(config.CHANNEL_MODLOGS_750R).send(embed=embed)
+
         print(prfx + "Bot initialized, ready for use" + Fore.WHITE)
 
         # Set bot's name
-        await client.user.edit(username="750Royals")
-        with open(
-                r"C:\Users\Vigne\OneDrive\Documents\Programing Master\Python\Github Projects\750R-Discord-Bot\assets\teju.png",
-                "rb") as f:
-            await client.user.edit(avatar=f.read())
+        # await client.user.edit(username="750Royals")
+        # with open(
+        #         r"C:\Users\Vigne\OneDrive\Documents\Programing Master\Python\Github Projects\750R-Discord-Bot\assets\teju.png",
+        #         "rb") as f:
+        #     await client.user.edit(avatar=f.read())
 
 
     @client.event
