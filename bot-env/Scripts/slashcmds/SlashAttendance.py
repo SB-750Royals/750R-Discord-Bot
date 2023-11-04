@@ -5,7 +5,10 @@ import gspread
 from discord import app_commands
 from oauth2client.service_account import ServiceAccountCredentials
 
-# Variables
+# Channels
+SERVER_750R = 703694008345559130
+CHANNEL_MODLOGS_750R = 1082361625073434636
+
 # Members
 MEMBER_NICK_750R = ["nk2023_", "Nicholas"]
 MEMBER_ANUSHREE_750R = ["anuuu_0", "Anushree"]
@@ -33,6 +36,15 @@ sheet_url = 'https://docs.google.com/spreadsheets/d/1gR150DNFLcbYqfVO4tfAwFQ-Tjq
 
 
 def get_all_sheet_data(url):
+    """
+    Retrieves all data from a Google Sheets worksheet and returns it as a list of dictionaries.
+
+    Args:
+        url (str): The URL of the Google Sheets worksheet.
+
+    Returns:
+        list: A list of dictionaries, where each dictionary represents a row of data from the worksheet.
+    """
     output = []
 
     try:
@@ -44,7 +56,6 @@ def get_all_sheet_data(url):
 
     except Exception as e:
         output.append(None)
-        print(e)
 
 
 class AttendanceGroup(app_commands.Group):
@@ -54,35 +65,37 @@ class AttendanceGroup(app_commands.Group):
     async def attendees(self, interaction):
         pass
 
-    # TODO: Remove debug code
-    # TODO: Add better ero
-    # TODO: Weekly attendance formatting
     @app_commands.command(name="show", description="shows the attendance of the person who used the command")
     async def show(self, interaction):
-
+        """
+        Shows the attendance of the person who used the command.
+        """
         # Look up the real name of the user from config.MEMBERS
         global name
         username = interaction.user.name
         name = None
+
         for member in MEMBERS:
-            print(member[0], username, str(username) == str(member[0]))
-
-            # Check if the current member's first element matches username
             if str(username) == str(member[0]):
-                name = member[1]  # If a match is found, assign the second element of the member to name
-                print("Name found:", name)
-                break  # Exit the loop since we found a match
+                name = member[1]
+                break
 
-        # If name is still None, the user is not a member of 750R
+                # If name is still None, the user is not a member of 750R
         if name is None:
             await interaction.response.send_message("You are not a member of 750R.", ephemeral=True)
             return
         else:
-            # Get the attendance data from Google Sheets
             data = get_all_sheet_data(sheet_url)
 
+            # Error handling
+            if not data:
+                await interaction.response.send_message("Could not load attendance data. Please try again later.",
+                                                        ephemeral=True)
+                modlog_channel = interaction.client.get_guild(SERVER_750R).get_channel(CHANNEL_MODLOGS_750R)
+                await modlog_channel.send("Error: Attendance data could not be retrieved.")
+                return
+
             # Set data to the array with the name of the user
-            print(data, type(data))
             for row in data:
                 if row['First Name'] == name:
                     data = row
@@ -124,18 +137,24 @@ class AttendanceGroup(app_commands.Group):
             if missed_sessions:
                 embed.add_field(name="Missed Sessions", value=missed_sessions, inline=False)
 
-            # Send the embed
+            # Return the embed
             await interaction.response.send_message(embed=embed, ephemeral=True)
 
+        # Mod log
+        await interaction.client.get_guild(SERVER_750R).get_channel(CHANNEL_MODLOGS_750R).send(embed=embed)
 
-# @app_commands.command(name="checkin", description="check in to the meeting happening that day")
-#     async def checkin(self, interaction):
-#         pass
-#
-#     # Return "you're bad" if they haven't checked in first
-#     @app_commands.command(name="checkout", description="check out of the meeting happening that day")
-#     async def checkout(self, interaction):
-#         pass
+    # TODO: Add checkin and checkout commands
+    @app_commands.command(name="checkin", description="check in to the meeting happening that day")
+    async def checkin(self, interaction):
+        # reply to the user saying under construction
+        await interaction.response.send_message("This command is under construction.", ephemeral=True)
+
+    # Return "you're bad" if they haven't checked in first
+    @app_commands.command(name="checkout", description="check out of the meeting happening that day")
+    async def checkout(self, interaction):
+        # reply to the user saying under construction
+        await interaction.response.send_message("This command is under construction.", ephemeral=True)
+
 
 async def setup(bot):
     bot.tree.add_command(AttendanceGroup(name="attendance", description="attendance commands"))

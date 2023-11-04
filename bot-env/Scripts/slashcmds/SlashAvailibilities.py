@@ -6,8 +6,20 @@ import config
 
 class AvailibilitiesGroup(app_commands.Group):
 
+
     @app_commands.command(name="set-next-week", description="Determine which days are available for next week")
     async def setNextWeek(self, interaction, message: str):
+        """
+        Sets the available days for the next week based on the message parameter.
+        The available days are written to a JSON file and a message is sent to the modlogs channel.
+
+        Parameters:
+        interaction (discord.Interaction): The interaction object.
+        message (str): A string containing the available days for the next week.
+
+        Returns:
+        None
+        """
         days = []
         for char in message.lower():
             if char in "mtwrfsu":
@@ -27,10 +39,9 @@ class AvailibilitiesGroup(app_commands.Group):
         embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
         embed.add_field(name="Days", value=f"{days}", inline=False)
 
+        await interaction.response.send_message(f"Set next week's availibilities to {days}", ephemeral=True)
         await interaction.client.get_guild(config.SERVER_750R).get_channel(config.CHANNEL_MODLOGS_750R).send(
             embed=embed)
-
-        await interaction.response.send_message(f"Set next week's availibilities to {days}", ephemeral=True)
 
 
 async def setup(client):
