@@ -22,9 +22,10 @@ MEMBER_VIHAAN_750R = ["thesurvivorx", "Vihaan"]
 MEMBER_YEGNA_750R = ["yegna", "Yegna"]
 MEMBER_RAKSHNA_750R = ["rockyroad7559", "Rakshna"]
 MEMBER_ESHA_750R = ["eshavesha", "Esha"]
+MEMBER_ABHAYA_750R = ["abhaya_", "Abhaya"]
 MEMBERS = [MEMBER_NICK_750R, MEMBER_ANUSHREE_750R, MEMBER_HARI_750R, MEMBER_ARJUN_750R, MEMBER_ANIKA_750R,
            MEMBER_TEJAS_750R, MEMBER_VIGNESH_750R, MEMBER_VIVEK_750R, MEMBER_VIHAAN_750R, MEMBER_YEGNA_750R,
-           MEMBER_RAKSHNA_750R, MEMBER_ESHA_750R]
+           MEMBER_RAKSHNA_750R, MEMBER_ESHA_750R, MEMBER_ABHAYA_750R]
 
 # Credentials
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
@@ -138,9 +139,9 @@ class AttendanceGroup(app_commands.Group):
 
             # Only add the Attendance Record field if there's something to show
             if attendance_records:
-                embed.add_field(name="**✅ Attendance Record**", value=attendance_records, inline=False)
+                embed.add_field(name="**✅ Weekly Record**", value=attendance_records, inline=False)
             if missed_sessions:
-                embed.add_field(name="**❌ Missed Sessions**", value=missed_sessions, inline=False)
+                embed.add_field(name="**❌ Missed Weeks**", value=missed_sessions, inline=False)
 
             # Send the embed
             await interaction.response.send_message(embed=embed, ephemeral=True)
