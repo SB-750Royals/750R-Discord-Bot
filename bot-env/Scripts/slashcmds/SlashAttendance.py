@@ -1,4 +1,5 @@
 import json
+from fractions import Fraction
 
 import discord
 import gspread
@@ -128,20 +129,24 @@ class AttendanceGroup(app_commands.Group):
             for key, value in data_dict.items():
                 if key in ['Club', 'Advisors', 'Last Name', 'First Name', 'Student ID', 'Grade', 'PTP', 'Position',
                            'Gender', 'Penalties', 'Percentage']:
-                    continue  # skip non-date fields
+                    continue
+                elif key == '':
+                    value = "N/A + 💤"
+                    attendance_records += f"**{key:<10}**: {value:>5}" + "\n"
                 else:
-                    if value == '':
-                        count += 1
-                        if count < 3:
-                            missed_sessions += f"{key:<10}: 🚫\n"  # Changed from 'N/A' to a 'no entry' emoji
-                    else:
-                        attendance_records += f"**{key:<10}**: {value:>2}\n"  # Bold the key for better visibility
+                    try:
+                        if float(Fraction(value)) == 0:
+                            emoji = " ❌"
+                        elif float(Fraction(value)) < 1:
+                            emoji = " ⚠️"
+                        else:
+                            emoji = " ✅"
+                        attendance_records += f"**{key:<10}**: {float(Fraction(value)):>5.2f}" + emoji + "\n"
+                    except ValueError:
+                        attendance_records += f"**{key:<10}**: {value:>5}\n"
 
-            # Only add the Attendance Record field if there's something to show
             if attendance_records:
-                embed.add_field(name="**✅ Weekly Record**", value=attendance_records, inline=False)
-            if missed_sessions:
-                embed.add_field(name="**❌ Missed Weeks**", value=missed_sessions, inline=False)
+                embed.add_field(name="**📅 Attendance Record**", value=attendance_records, inline=False)
 
             # Send the embed
             await interaction.response.send_message(embed=embed, ephemeral=True)
