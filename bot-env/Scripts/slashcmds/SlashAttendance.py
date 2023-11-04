@@ -105,39 +105,44 @@ class AttendanceGroup(app_commands.Group):
                 str(data).replace("'", '"'))  # replace single quotes with double quotes for valid JSON
 
             # Construct the embed
-            embed = discord.Embed(title="Student Information", color=discord.Color.blue())
+            embed = discord.Embed(title="📚 Student Information", color=0x1abc9c)  # A more vibrant teal color
 
-            # Use the dictionary to add fields to the embed
-            embed.add_field(name="Club", value=data_dict.get("Club", "N/A"), inline=True)
-            embed.add_field(name="Advisors", value=data_dict.get("Advisors", "N/A"), inline=True)
-            embed.add_field(name="Name",
-                            value=f'{data_dict.get("First Name", "N/A")} {data_dict.get("Last Name", "N/A")}',
-                            inline=False)
-            embed.add_field(name="Student ID", value=str(data_dict.get("Student ID", "N/A")), inline=True)
-            embed.add_field(name="Grade", value=str(data_dict.get("Grade", "N/A")), inline=True)
-            embed.add_field(name="Position", value=data_dict.get("Position", "N/A"), inline=True)
-            embed.add_field(name="Gender", value=data_dict.get("Gender", "N/A"), inline=True)
-            embed.add_field(name="Penalties", value=str(data_dict.get("Penalties", "N/A")), inline=True)
-            embed.add_field(name="Percentage", value=f"{data_dict.get('Percentage', 'N/A')}%", inline=True)
+            # Use the dictionary to add fields to the embed with some Markdown for styling
+            embed.add_field(
+                name="**👤 Name**",
+                value=f'*{data_dict.get("First Name", "N/A")} {data_dict.get("Last Name", "N/A")}*',
+                inline=False
+            )
+            embed.add_field(name="**🆔 Student ID**", value=str(data_dict.get("Student ID", "N/A")), inline=True)
+            embed.add_field(name="**📊 Grade**", value=str(data_dict.get("Grade", "N/A")), inline=True)
+            embed.add_field(name="**🎖 Position**", value=data_dict.get("Position", "N/A"), inline=True)
+            embed.add_field(name="**🚻 Gender**", value=data_dict.get("Gender", "N/A"), inline=True)
+            embed.add_field(name="**⚠ Penalties**", value=str(data_dict.get("Penalties", "N/A")), inline=True)
+            embed.add_field(name="**🔢 Percentage**", value=f"{data_dict.get('Percentage', 'N/A')}%", inline=True)
 
-            # Construct the attendance record string based on dates and values
+            # Construct the attendance record string based on dates and values with enhanced styling
             attendance_records = ""
             missed_sessions = ""
+            count = 0
             for key, value in data_dict.items():
                 if key in ['Club', 'Advisors', 'Last Name', 'First Name', 'Student ID', 'Grade', 'PTP', 'Position',
                            'Gender', 'Penalties', 'Percentage']:
                     continue  # skip non-date fields
-                elif value == 1:
-                    attendance_records += f"{key}: ✅\n"
-                elif value == '':
-                    missed_sessions += f"{key}: ❌\n"
+                else:
+                    if value == '':
+                        count += 1
+                        if count < 3:
+                            missed_sessions += f"{key:<10}: 🚫\n"  # Changed from 'N/A' to a 'no entry' emoji
+                    else:
+                        attendance_records += f"**{key:<10}**: {value:>2}\n"  # Bold the key for better visibility
 
+            # Only add the Attendance Record field if there's something to show
             if attendance_records:
-                embed.add_field(name="Attendance Record", value=attendance_records, inline=False)
+                embed.add_field(name="**✅ Attendance Record**", value=attendance_records, inline=False)
             if missed_sessions:
-                embed.add_field(name="Missed Sessions", value=missed_sessions, inline=False)
+                embed.add_field(name="**❌ Missed Sessions**", value=missed_sessions, inline=False)
 
-            # Return the embed
+            # Send the embed
             await interaction.response.send_message(embed=embed, ephemeral=True)
 
         # Mod log
