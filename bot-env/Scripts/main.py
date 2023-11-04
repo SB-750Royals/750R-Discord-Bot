@@ -105,7 +105,7 @@ if __name__ == '__main__':
         await client.get_guild(config.SERVER_750R).get_channel(config.CHANNEL_MODLOGS_750R).send(embed=embed)
 
         print(prfx + "Bot initialized, ready for use" + Fore.WHITE)
-
+ 
         # Set bot's name
         # await client.user.edit(username="750Royals")
         # with open(
