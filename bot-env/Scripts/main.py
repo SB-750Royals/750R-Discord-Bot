@@ -82,6 +82,7 @@ if __name__ == '__main__':
         await client.load_extension("slashcmds.SlashDev")
         await client.load_extension("slashcmds.SlashAvailibilities")
         await client.load_extension("slashcmds.SlashAttendance")
+        await client.load_extension("slashcmds.SlashExpenses")
         # await client.load_extension("slashcmds.SlashAssignment")
 
         # Initilalize Slash (Uncomment to sync slash commands, comment when no changes to avoid rate limit)
