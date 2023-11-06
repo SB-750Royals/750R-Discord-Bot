@@ -112,6 +112,8 @@ if __name__ == '__main__':
 
         print(prfx + "Bot initialized, ready for use" + Fore.WHITE)
 
+        print("TESTTTTTTTTTTTTTTTTTT")
+
         # Set bot's name
         # await client.user.edit(username="750Royals")
         # with open(
