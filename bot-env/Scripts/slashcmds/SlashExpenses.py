@@ -9,6 +9,15 @@ class ExpensesGroup(app_commands.Group):
 
     @app_commands.command(name="expenses", description="get spendings spreadsheet link")
     async def create(self, interaction):
+        """
+        Command that sends the link to the expenses spreadsheet and logs the interaction in the modlogs channel.
+
+        Parameters:
+        interaction (discord.Interaction): The interaction object that triggered the command.
+
+        Returns:
+        None
+        """
         await interaction.response.send_message(
             "https://docs.google.com/spreadsheets/d/1Lq1HU4udJPLt5BSk2sk89DRRWghRD6QIWxLBMrSEcXI/edit?usp=sharing",
             ephemeral=True)
@@ -18,7 +27,6 @@ class ExpensesGroup(app_commands.Group):
         embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
         embed.add_field(name="User", value=interaction.user.mention, inline=False)
         embed.add_field(name="Channel", value=interaction.channel.mention, inline=False)
-        embed.add_field(name="Message", value=interaction.message.content, inline=False)
         embed.add_field(name="Response",
                         value="https://docs.google.com/spreadsheets/d/1Lq1HU4udJPLt5BSk2sk89DRRWghRD6QIWxLBMrSEcXI/edit?usp=sharing",
                         inline=False)

@@ -19,9 +19,9 @@ if __name__ == '__main__':
 
     async def availibilities():
 
-        # Initialize    
-        channel = client.get_channel(config.CHANNEL_BOTLOGS_750R)
-        now = datetime.utcnow()
+        # Initialize
+        channel = client.get_channel(704006958969127052)
+        now = datetime.utcnow() + timedelta(days=1)
         last_monday = now - timedelta(days=now.weekday())
         next_saturday = last_monday + timedelta(days=5)
 
@@ -30,14 +30,17 @@ if __name__ == '__main__':
             datetime.combine(next_saturday, time(23, 59)).timestamp())
         message_content = (
             f"<@&{config.ROLE_TEAMS_750R}> Availabilities for <t:{start_of_week}:D> - <t:{end_of_week}:D> "
-            "Availabilities for this week. You are required to attend 1 meeting and the full team"
-            "meeting on Friday. React with which days you are coming."
+            "Availabilities for this week. You are required to attend **2 meetings** and the full team"
+            "meeting on Friday. I know this is more than normal. But we are rebuilding our bot and we need "
+            "all hands on deck. React with which days you are coming. Attendance for last week is posted"
         )
         msg = await channel.send(message_content)
 
         # TODO: Implement logic to check if there are no availibilities for the week
         # Add reactions
-        with open("assets/AvailibilitiesData.JSON", "r") as file:
+        with open(
+                r"C:\Users\Vigne\OneDrive\Documents\Programing Master\Python\Github Projects\750R-Discord-Bot\assets\AvailibilitiesData.JSON",
+                "r") as file:
             data = file.read()
             if data != "null":
                 data = eval(data)
@@ -64,7 +67,9 @@ if __name__ == '__main__':
                 await msg.add_reaction("🇫")
                 await msg.add_reaction("🇸")
                 await msg.add_reaction("🇺")
-            with open("assets/AvailibilitiesData.JSON", "w") as file:
+            with open(
+                    r"C:\Users\Vigne\OneDrive\Documents\Programing Master\Python\Github Projects\750R-Discord-Bot\assets\AvailibilitiesData.JSON",
+                    "w") as file:
                 file.write("null")
 
 
@@ -106,11 +111,11 @@ if __name__ == '__main__':
         await client.get_guild(config.SERVER_750R).get_channel(config.CHANNEL_MODLOGS_750R).send(embed=embed)
 
         print(prfx + "Bot initialized, ready for use" + Fore.WHITE)
- 
+
         # Set bot's name
         # await client.user.edit(username="750Royals")
         # with open(
-        #         r"C:\Users\Vigne\OneDrive\Documents\Programing Master\Python\Github Projects\750R-Discord-Bot\assets\teju.png",
+        #         r"C:\Users\Vigne\Downloads\8-5IDJn0IR0v1ecJx.png",
         #         "rb") as f:
         #     await client.user.edit(avatar=f.read())
 

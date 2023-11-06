@@ -4,6 +4,7 @@ from discord import app_commands
 
 class DevGroup(app_commands.Group):
 
+    # TODO: Fix command on server
     @app_commands.command(name="exit", description="Terminates the bot")
     async def exit(self, interaction):
         """

@@ -3,9 +3,11 @@ from discord import app_commands
 
 import config
 
+ROLE_ADMIN_750R = 703704798884790342
+MEMBER_YEGNA_750R = 991121214120661053
+
 
 class AvailibilitiesGroup(app_commands.Group):
-
 
     @app_commands.command(name="set-next-week", description="Determine which days are available for next week")
     async def setNextWeek(self, interaction, message: str):
@@ -20,6 +22,12 @@ class AvailibilitiesGroup(app_commands.Group):
         Returns:
         None
         """
+        # Permission Check
+        if not any(role.id == "ROLE_ADMIN_750R" for role in
+                   interaction.user.roles) and interaction.user.id != MEMBER_YEGNA_750R:
+            await interaction.response.send_message("You do not have permission to use this command.", ephemeral=True)
+            return
+
         days = []
         for char in message.lower():
             if char in "mtwrfsu":
@@ -29,7 +37,7 @@ class AvailibilitiesGroup(app_commands.Group):
 
         # Clear all data in assets\AvailibilitiesData.JSON and write the new data
         with open(
-                r"C:\Users\Vigne\OneDrive\Documents\Programing Master\Python\Github Projects\750R-Discord-Bot\assets\macaca_nigra_self-portrait-3e0070aa19a7fe36e802253048411a38f14a79f8-s1100-c50.jpg",
+                r"C:\Users\Vigne\OneDrive\Documents\Programing Master\Python\Github Projects\750R-Discord-Bot\assets\AvailibilitiesData.JSON",
                 "w") as file:
             file.write(f'{{"days": {days}}}')
 
