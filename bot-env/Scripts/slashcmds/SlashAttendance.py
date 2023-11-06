@@ -31,7 +31,7 @@ MEMBERS = [MEMBER_NICK_750R, MEMBER_ANUSHREE_750R, MEMBER_HARI_750R, MEMBER_ARJU
 # Credentials
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
 creds = ServiceAccountCredentials.from_json_keyfile_name(
-    r'C:\Users\Vigne\OneDrive\Documents\Programing Master\Python\Github Projects\750R-Discord-Bot\assets\credentials.json',
+    r'750R-Discord-Bot/assets/credentials.json',
     scope)
 client = gspread.authorize(creds)
 sheet_url = 'https://docs.google.com/spreadsheets/d/1gR150DNFLcbYqfVO4tfAwFQ-Tjquxvb3Xd5mm9_e9Zg/edit?usp=sharing'

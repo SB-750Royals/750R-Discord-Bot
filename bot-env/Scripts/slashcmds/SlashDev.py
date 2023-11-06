@@ -1,10 +1,10 @@
 import discord
 from discord import app_commands
 
+CHANNEL_MODLOGS_750R = 1082361625073434636
 
 class DevGroup(app_commands.Group):
 
-    # TODO: Fix command on server
     @app_commands.command(name="exit", description="Terminates the bot")
     async def exit(self, interaction):
         """
@@ -22,7 +22,7 @@ class DevGroup(app_commands.Group):
                                   color=discord.Color.gold())
             embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
             await interaction.response.send_message("Bot is shutting down")
-            await interaction.client.get_guild(750_000_000_000_000_000).get_channel(750_000_000_000_000_000).send(
+            await interaction.client.get_guild(CHANNEL_MODLOGS_750R).get_channel(CHANNEL_MODLOGS_750R).send(
                 embed=embed)
             await interaction.client.close()
         else:

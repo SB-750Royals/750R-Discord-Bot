@@ -23,8 +23,7 @@ class AvailibilitiesGroup(app_commands.Group):
         None
         """
         # Permission Check
-        if not any(role.id == "ROLE_ADMIN_750R" for role in
-                   interaction.user.roles) and interaction.user.id != MEMBER_YEGNA_750R:
+        if not any(role.id == ROLE_ADMIN_750R for role in interaction.user.roles) and interaction.user.id != MEMBER_YEGNA_750R:
             await interaction.response.send_message("You do not have permission to use this command.", ephemeral=True)
             return
 
@@ -37,7 +36,7 @@ class AvailibilitiesGroup(app_commands.Group):
 
         # Clear all data in assets\AvailibilitiesData.JSON and write the new data
         with open(
-                r"C:\Users\Vigne\OneDrive\Documents\Programing Master\Python\Github Projects\750R-Discord-Bot\assets\AvailibilitiesData.JSON",
+                r"750R-Discord-Bot/assets/AvailibilitiesData.JSON",
                 "w") as file:
             file.write(f'{{"days": {days}}}')
 

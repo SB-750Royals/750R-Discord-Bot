@@ -7,6 +7,7 @@ CHANNEL_MODLOGS_750R = 1082361625073434636
 
 class ExpensesGroup(app_commands.Group):
 
+    
     @app_commands.command(name="expenses", description="get spendings spreadsheet link")
     async def create(self, interaction):
         """
