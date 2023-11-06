@@ -156,6 +156,10 @@ class StatusGroup(app_commands.Group):
             await interaction.response.send_message("Status set to latency", ephemeral=True)
             await interaction.client.get_guild(703694008345559130).get_channel(CHANNEL_MODLOGS_750R).send(
                 embed=embed)
+        
+        # reply to the user with the latency
+        await interaction.response.send_message(f"Latency: {(interaction.client.latency * 1000):.3f} ms", ephemeral=True)
+        await interaction.response.send_message("What's up?", ephemeral=True)
 
 
 async def setup(client):
