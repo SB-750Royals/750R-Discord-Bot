@@ -5,8 +5,12 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from colorama import Fore, Style, Back
 from discord.ext import commands
+from profanity import profanity
 
 import config
+
+# Variables
+MEMBER_HARI_750R = 708101390609940562
 
 if __name__ == '__main__':
 
@@ -124,6 +128,10 @@ if __name__ == '__main__':
     async def on_message(message):
         if message.author == client.user:
             return
+        if profanity.contains_profanity(message.content) and (
+                message.author.id == MEMBER_HARI_750R or message.author.id == 915063961777500180):
+            await message.delete()
+            await message.channel.send(f"<@{MEMBER_HARI_750R}> You have been warned for using profanity")
         elif message.content.lower() == "hello all":
             await message.reply("Hello!")
         elif message.content.lower() == "hello":
@@ -168,16 +176,6 @@ if __name__ == '__main__':
             await message.add_reaction("🧙")
             await message.add_reaction("🪄")
             await message.add_reaction("🔦")
-        elif message.content.lower().find("tej") != -1:
-            with open(
-                    r"C:\Users\Vigne\OneDrive\Documents\Programing Master\Python\Github Projects\750R-Discord-Bot\assets\teju.png",
-                    "rb") as f:
-                await message.channel.send(file=discord.File(f))
-        elif message.content.lower().find("monkey") != -1:
-            with open(
-                    r"C:\Users\Vigne\OneDrive\Documents\Programing Master\Python\Github Projects\750R-Discord-Bot\assets\macaca_nigra_self-portrait-3e0070aa19a7fe36e802253048411a38f14a79f8-s1100-c50.jpg",
-                    "rb") as f:
-                await message.channel.send(file=discord.File(f))
         elif message.content.lower().find("bye") != -1:
             await message.channel.send("bye")
         elif client.user.mentioned_in(message):

@@ -1,3 +1,5 @@
+import asyncio
+
 import discord
 from discord import app_commands
 
@@ -49,6 +51,10 @@ class StatusGroup(app_commands.Group):
             await interaction.client.get_guild(SERVER_750R).get_channel(CHANNEL_MODLOGS_750R).send(
                 embed=embed)
 
+            for task in asyncio.all_tasks():
+                if task.get_name() == "change_status":
+                    task.cancel()
+
     @app_commands.command(name="offline", description="Set the bot's status to offline")
     async def idle(self, interaction, message: str):
         """
@@ -75,6 +81,10 @@ class StatusGroup(app_commands.Group):
             await interaction.response.send_message(f"Status set to idle with message: {message}", ephemeral=True)
             await interaction.client.get_guild(703694008345559130).get_channel(CHANNEL_MODLOGS_750R).send(
                 embed=embed)
+
+            for task in asyncio.all_tasks():
+                if task.get_name() == "change_status":
+                    task.cancel()
 
     @app_commands.command(name="dnd", description="Set the bot's status to dnd")
     async def dnd(self, interaction, message: str):
@@ -103,6 +113,10 @@ class StatusGroup(app_commands.Group):
             await interaction.client.get_guild(703694008345559130).get_channel(CHANNEL_MODLOGS_750R).send(
                 embed=embed)
 
+            for task in asyncio.all_tasks():
+                if task.get_name() == "change_status":
+                    task.cancel()
+
     @app_commands.command(name="invisible", description="Set the bot's status to invisible")
     async def invisible(self, interaction):
         """
@@ -127,6 +141,10 @@ class StatusGroup(app_commands.Group):
             await interaction.response.send_message("Status set to invisible", ephemeral=True)
             await interaction.client.get_guild(703694008345559130).get_channel(CHANNEL_MODLOGS_750R).send(
                 embed=embed)
+
+            for task in asyncio.all_tasks():
+                if task.get_name() == "change_status":
+                    task.cancel()
 
     @app_commands.command(name="latency", description="Set the bot's status to latency")
     async def latency(self, interaction):
@@ -156,6 +174,14 @@ class StatusGroup(app_commands.Group):
             await interaction.response.send_message("Status set to latency", ephemeral=True)
             await interaction.client.get_guild(703694008345559130).get_channel(CHANNEL_MODLOGS_750R).send(
                 embed=embed)
+
+            async def change_status():
+                while True:
+                    await asyncio.sleep(5)
+                    await interaction.client.change_presence(
+                        activity=discord.Game(name=f"Latency: {(interaction.client.latency * 1000):.3f} ms"))
+
+            asyncio.create_task(change_status())
 
 
 async def setup(client):

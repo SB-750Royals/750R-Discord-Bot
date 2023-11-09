@@ -23,7 +23,7 @@ class AvailibilitiesGroup(app_commands.Group):
         None
         """
         # Permission Check
-        if not any(role.id == "ROLE_ADMIN_750R" for role in
+        if not any(role.id == ROLE_ADMIN_750R for role in
                    interaction.user.roles) and interaction.user.id != MEMBER_YEGNA_750R:
             await interaction.response.send_message("You do not have permission to use this command.", ephemeral=True)
             return
