@@ -3,9 +3,10 @@ from discord import app_commands
 
 CHANNEL_MODLOGS_750R = 1082361625073434636
 
+
 class DevGroup(app_commands.Group):
 
-    @app_commands.command(name="exit", description="Terminates the bot")
+    @app_commands.command(name="restart", description="restart the bot")
     async def exit(self, interaction):
         """
         This function is used to terminate the bot. It checks if the user has the 'Admin' role and if so, sends a message to the server announcing the bot is shutting down, and then closes the bot. If the user does not have the 'Admin' role, it sends a message saying they do not have the necessary permissions to execute this command.
@@ -22,8 +23,6 @@ class DevGroup(app_commands.Group):
                                   color=discord.Color.gold())
             embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
             await interaction.response.send_message("Bot is shutting down")
-            await interaction.client.get_guild(CHANNEL_MODLOGS_750R).get_channel(CHANNEL_MODLOGS_750R).send(
-                embed=embed)
             await interaction.client.close()
         else:
             await interaction.response.send_message(
