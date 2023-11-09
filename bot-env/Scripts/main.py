@@ -5,12 +5,9 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from colorama import Fore, Style, Back
 from discord.ext import commands
-from profanity import profanity
 
 import config
 
-# Variables
-MEMBER_HARI_750R = 708101390609940562
 
 if __name__ == '__main__':
 
@@ -128,10 +125,6 @@ if __name__ == '__main__':
     async def on_message(message):
         if message.author == client.user:
             return
-        if profanity.contains_profanity(message.content) and (
-                message.author.id == MEMBER_HARI_750R or message.author.id == 915063961777500180):
-            await message.delete()
-            await message.channel.send(f"<@{MEMBER_HARI_750R}> You have been warned for using profanity")
         elif message.content.lower() == "hello all":
             await message.reply("Hello!")
         elif message.content.lower() == "hello":
