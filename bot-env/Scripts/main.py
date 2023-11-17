@@ -11,13 +11,12 @@ import config
 
 if __name__ == '__main__':
 
-    # Initialize bot
     client = commands.Bot(command_prefix='!', intents=discord.Intents.all())
     current_time = datetime.now()
     time_string = current_time.strftime("%H:%M:%S EST")
     prfx = (Back.LIGHTBLACK_EX + Fore.GREEN + time_string + Back.RESET + Fore.WHITE + Style.BRIGHT + " ")
 
-
+    # Scheduler Functions
     async def availibilities():
 
         # Initialize
@@ -26,21 +25,35 @@ if __name__ == '__main__':
         last_monday = now - timedelta(days=now.weekday())
         next_saturday = last_monday + timedelta(days=5)
 
+        # Description
+        with open(
+                r"assets\AvailibilitiesDescription.JSON",
+                "r") as file:
+            data = file.read()
+            if data != "null":
+                data = eval(data)
+                message_content = data["description"]
+            else:
+                message_content = (
+                    f"<@&{config.ROLE_TEAMS_750R}> Availabilities for <t:{start_of_week}:D> - <t:{end_of_week}:D> "
+                    "Availabilities for this week. You are required to attend **1 meeting** and the full team"
+                    "meeting on Friday. React with which days you are coming. Attendance for last week is posted"
+                )
+            with open(
+                    r"assets\AvailibilitiesDescription.JSON",
+                    "w") as file:
+                file.write("null")
+
         # Create Message
         start_of_week, end_of_week = int(datetime.combine(last_monday, time()).timestamp()), int(
             datetime.combine(next_saturday, time(23, 59)).timestamp())
         message_content = (
-            f"<@&{config.ROLE_TEAMS_750R}> Availabilities for <t:{start_of_week}:D> - <t:{end_of_week}:D> "
-            "Availabilities for this week. You are required to attend **2 meetings** and the full team"
-            "meeting on Friday. I know this is more than normal. But we are rebuilding our bot and we need "
-            "all hands on deck. React with which days you are coming. Attendance for last week is posted"
+            f"<@&{config.ROLE_TEAMS_750R}> Availabilities for <t:{start_of_week}:D> - <t:{end_of_week}:D> " + message_content
         )
         msg = await channel.send(message_content)
 
-        # TODO: Implement logic to check if there are no availibilities for the week
-        # Add reactions
         with open(
-                r"C:\Users\Vigne\OneDrive\Documents\Programing Master\Python\Github Projects\750R-Discord-Bot\assets\AvailibilitiesData.JSON",
+                r"assets\AvailibilitiesData.JSON",
                 "r") as file:
             data = file.read()
             if data != "null":
@@ -69,10 +82,54 @@ if __name__ == '__main__':
                 await msg.add_reaction("🇸")
                 await msg.add_reaction("🇺")
             with open(
-                    r"C:\Users\Vigne\OneDrive\Documents\Programing Master\Python\Github Projects\750R-Discord-Bot\assets\AvailibilitiesData.JSON",
+                    r"assets\AvailibilitiesData.JSON",
                     "w") as file:
                 file.write("null")
 
+    async def christmas():
+        channel = client.get_channel(config.CHANNEL_ANNOUNCEMENTS_750R)
+        message = channel.send(f"<@&{config.ROLE_TEAMS_750R}> Merry Christmas!")
+        await message.add_reaction("🎄")
+
+    async def diwali():
+        channel = client.get_channel(config.CHANNEL_ANNOUNCEMENTS_750R)
+        message = channel.send(f"<@&{config.ROLE_TEAMS_750R}> Happy Diwali!")
+        await message.add_reaction("🪔")
+
+    async def halloween():
+        channel = client.get_channel(config.CHANNEL_ANNOUNCEMENTS_750R)
+        message = channel.send(f"<@&{config.ROLE_TEAMS_750R}> Happy Halloween!")
+        await message.add_reaction("🎃")
+
+    async def thanksgiving():
+        channel = client.get_channel(config.CHANNEL_ANNOUNCEMENTS_750R)
+        message = channel.send(f"<@&{config.ROLE_TEAMS_750R}> Happy Thanksgiving!")
+        await message.add_reaction("🦃")
+    
+    async def newyear():
+        channel = client.get_channel(config.CHANNEL_ANNOUNCEMENTS_750R)
+        message = channel.send(f"<@&{config.ROLE_TEAMS_750R}> Happy New Year!")
+        await message.add_reaction("🎉")
+
+    async def easter():
+        channel = client.get_channel(config.CHANNEL_ANNOUNCEMENTS_750R)
+        message = channel.send(f"<@&{config.ROLE_TEAMS_750R}> Happy Easter!")
+        await message.add_reaction("🐰")
+
+    async def valentines():
+        channel = client.get_channel(config.CHANNEL_ANNOUNCEMENTS_750R)
+        message = channel.send(f"<@&{config.ROLE_TEAMS_750R}> Happy Valentine's Day!")
+        await message.add_reaction("💖")
+
+    async def mothersday():
+        channel = client.get_channel(config.CHANNEL_ANNOUNCEMENTS_750R)
+        message = channel.send(f"<@&{config.ROLE_TEAMS_750R}> Happy Mother's Day!")
+        await message.add_reaction("👩")
+
+    async def fathersday():
+        channel = client.get_channel(config.CHANNEL_ANNOUNCEMENTS_750R)
+        message = channel.send(f"<@&{config.ROLE_TEAMS_750R}> Happy Father's Day!")
+        await message.add_reaction("👨")
 
     @client.event
     async def on_ready():
@@ -99,8 +156,19 @@ if __name__ == '__main__':
 
         # Start weekly task
         scheduler = AsyncIOScheduler()
-        scheduler.add_job(availibilities, CronTrigger(day_of_week='sun', hour=9, minute=0))
+        scheduler.add_job(availibilities, CronTrigger(day_of_week="sun", hour=0, minute=0, second=0))
+        scheduler.add_job(christmas, CronTrigger(day=25, month=12, hour=0, minute=0))
+        scheduler.add_job(diwali, CronTrigger(day=4, month=11, hour=0, minute=0))
+        scheduler.add_job(halloween, CronTrigger(day=31, month=10, hour=0, minute=0))
+        scheduler.add_job(thanksgiving, CronTrigger(day=25, month=11, hour=0, minute=0))
+        scheduler.add_job(newyear, CronTrigger(day=1, month=1, hour=0, minute=0))
+        scheduler.add_job(easter, CronTrigger(day=4, month=4, hour=0, minute=0))
+        scheduler.add_job(valentines, CronTrigger(day=14, month=2, hour=0, minute=0))
+        scheduler.add_job(mothersday, CronTrigger(day=9, month=5, hour=0, minute=0))
+        scheduler.add_job(fathersday, CronTrigger(day=20, month=6, hour=0, minute=0))
         scheduler.start()
+
+
 
         # Post Initialization Messages
         print(prfx + "Bot initialized " + Fore.YELLOW + client.user.name + Fore.WHITE + " is ready!")
@@ -120,6 +188,34 @@ if __name__ == '__main__':
         #         "rb") as f:
         #     await client.user.edit(avatar=f.read())
 
+    # TODO: Delete Meme Code
+    @client.event
+    async def on_reaction_add(reaction, user):
+        if user.bot:
+            return
+        elif reaction.message.author.id == 1119326295701078157 or reaction.message.author.id == 915063961777500180:
+            await reaction.remove(user)
+            await reaction.message.channel.send(f"{user.mention} You cannot react to this message")
+
+
+    # Detect when a slash command is used
+    @client.event
+    async def on_error(event, *args, **kwargs):
+        print(prfx + Fore.RED + "An error has occurred" + Fore.WHITE)
+        print(prfx + Fore.RED + f"Event: {event}" + Fore.WHITE)
+        print(prfx + Fore.RED + f"Args: {args}" + Fore.WHITE)
+        print(prfx + Fore.RED + f"Kwargs: {kwargs}" + Fore.WHITE)
+
+        # Send an error message to modlogs
+        embed = discord.Embed(title=f'An error has occurred',
+                                color=discord.Color.red())
+        embed.set_author(name=client.user.display_name, icon_url=client.user.avatar.url)
+        embed.add_field(name="Event", value=f"{event}", inline=False)
+        embed.add_field(name="Args", value=f"{args}", inline=False)
+        embed.add_field(name="Kwargs", value=f"{kwargs}", inline=False)
+        await client.get_guild(config.SERVER_750R).get_channel(config.CHANNEL_MODLOGS_750R).send(embed=embed)
+
+        await client.get_guild(config.SERVER_750R).get_channel(config.CHANNEL_MODLOGS_750R).send(embed=embed)
 
     @client.event
     async def on_message(message):

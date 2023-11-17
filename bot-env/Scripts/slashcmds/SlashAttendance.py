@@ -11,19 +11,19 @@ SERVER_750R = 703694008345559130
 CHANNEL_MODLOGS_750R = 1082361625073434636
 
 # Members
-MEMBER_NICK_750R = ["nk2023_", "Nicholas"]
-MEMBER_ANUSHREE_750R = ["anuuu_0", "Anushree"]
-MEMBER_HARI_750R = ["ThReT0(training arc)#7974", "Hari"]
-MEMBER_ARJUN_750R = ["moon401", "Arjun"]
-MEMBER_ANIKA_750R = ["hwisnfocnv", "Anika"]
-MEMBER_TEJAS_750R = ["tejasr", "Tejas"]
-MEMBER_VIGNESH_750R = ["vigneshs", "Vignesh"]
-MEMBER_VIVEK_750R = ["hunter4420", "Vivek"]
-MEMBER_VIHAAN_750R = ["thesurvivorx", "Vihaan"]
-MEMBER_YEGNA_750R = ["yegna", "Yegna"]
-MEMBER_RAKSHNA_750R = ["rockyroad7559", "Rakshna"]
-MEMBER_ESHA_750R = ["eshavesha", "Esha"]
-MEMBER_ABHAYA_750R = ["abhaya_", "Abhaya"]
+MEMBER_NICK_750R = ["nk2023_", "Nicholas", "https://docs.google.com/spreadsheets/d/1gR150DNFLcbYqfVO4tfAwFQ-Tjquxvb3Xd5mm9_e9Zg/edit#gid=734464439"]
+MEMBER_ANUSHREE_750R = ["anuuu_0", "Anushree", "https://docs.google.com/spreadsheets/d/1gR150DNFLcbYqfVO4tfAwFQ-Tjquxvb3Xd5mm9_e9Zg/edit#gid=394538806"]
+MEMBER_HARI_750R = ["ThReT0(training arc)#7974", "Hari", "https://docs.google.com/spreadsheets/d/1gR150DNFLcbYqfVO4tfAwFQ-Tjquxvb3Xd5mm9_e9Zg/edit#gid=654741910"]
+MEMBER_ARJUN_750R = ["moon401", "Arjun", "https://docs.google.com/spreadsheets/d/1gR150DNFLcbYqfVO4tfAwFQ-Tjquxvb3Xd5mm9_e9Zg/edit#gid=922982165"]
+MEMBER_ANIKA_750R = ["hwisnfocnv", "Anika", "https://docs.google.com/spreadsheets/d/1gR150DNFLcbYqfVO4tfAwFQ-Tjquxvb3Xd5mm9_e9Zg/edit#gid=958173301"]
+MEMBER_TEJAS_750R = ["tejasr", "Tejas", "https://docs.google.com/spreadsheets/d/1gR150DNFLcbYqfVO4tfAwFQ-Tjquxvb3Xd5mm9_e9Zg/edit#gid=342681239"]
+MEMBER_VIGNESH_750R = ["vigneshs", "Vignesh", "https://docs.google.com/spreadsheets/d/1gR150DNFLcbYqfVO4tfAwFQ-Tjquxvb3Xd5mm9_e9Zg/edit#gid=280741871"]
+MEMBER_VIVEK_750R = ["hunter4420", "Vivek", "https://docs.google.com/spreadsheets/d/1gR150DNFLcbYqfVO4tfAwFQ-Tjquxvb3Xd5mm9_e9Zg/edit#gid=876020145"]
+MEMBER_VIHAAN_750R = ["thesurvivorx", "Vihaan", "https://docs.google.com/spreadsheets/d/1gR150DNFLcbYqfVO4tfAwFQ-Tjquxvb3Xd5mm9_e9Zg/edit#gid=155480721"]
+MEMBER_YEGNA_750R = ["yegna", "Yegna", "https://docs.google.com/spreadsheets/d/1gR150DNFLcbYqfVO4tfAwFQ-Tjquxvb3Xd5mm9_e9Zg/edit#gid=1939972764"]
+MEMBER_RAKSHNA_750R = ["rockyroad7559", "Rakshna", "https://docs.google.com/spreadsheets/d/1gR150DNFLcbYqfVO4tfAwFQ-Tjquxvb3Xd5mm9_e9Zg/edit#gid=924950954"]
+MEMBER_ESHA_750R = ["eshavesha", "Esha", "https://docs.google.com/spreadsheets/d/1gR150DNFLcbYqfVO4tfAwFQ-Tjquxvb3Xd5mm9_e9Zg/edit#gid=884351999"]
+MEMBER_ABHAYA_750R = ["abhaya_", "Abhaya", "https://docs.google.com/spreadsheets/d/1gR150DNFLcbYqfVO4tfAwFQ-Tjquxvb3Xd5mm9_e9Zg/edit#gid=1133155582"]
 MEMBERS = [MEMBER_NICK_750R, MEMBER_ANUSHREE_750R, MEMBER_HARI_750R, MEMBER_ARJUN_750R, MEMBER_ANIKA_750R,
            MEMBER_TEJAS_750R, MEMBER_VIGNESH_750R, MEMBER_VIVEK_750R, MEMBER_VIHAAN_750R, MEMBER_YEGNA_750R,
            MEMBER_RAKSHNA_750R, MEMBER_ESHA_750R, MEMBER_ABHAYA_750R]
@@ -31,7 +31,7 @@ MEMBERS = [MEMBER_NICK_750R, MEMBER_ANUSHREE_750R, MEMBER_HARI_750R, MEMBER_ARJU
 # Credentials
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
 creds = ServiceAccountCredentials.from_json_keyfile_name(
-    r'C:\Users\Vigne\OneDrive\Documents\Programing Master\Python\Github Projects\750R-Discord-Bot\assets\credentials.json',
+    r'assets\credentials.json',
     scope)
 client = gspread.authorize(creds)
 sheet_url = 'https://docs.google.com/spreadsheets/d/1gR150DNFLcbYqfVO4tfAwFQ-Tjquxvb3Xd5mm9_e9Zg/edit?usp=sharing'
@@ -59,6 +59,32 @@ def get_all_sheet_data(url):
     except Exception as e:
         output.append(None)
 
+def get_all_sheets(url):
+    """
+    Retrieves all data from a Google Sheets worksheet and returns it as a list of dictionaries.
+
+    Args:
+        url (str): The URL of the Google Sheets worksheet.
+
+    Returns:
+        list: A list of dictionaries, where each dictionary represents a row of data from the worksheet.
+    """
+    # Define the scope
+    scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
+    creds = ServiceAccountCredentials.from_json_keyfile_name('assets\credentials.json', scope)
+    client = gspread.authorize(creds)
+    document = client.open_by_url(url)
+    sheet_list = document.worksheets()  
+
+    output = []
+
+    # Iterate over all sheets in the document
+    for sheet in sheet_list:
+        sheet_data = sheet.get_all_records()
+        output.append({'sheet_name': sheet.title, 'data': sheet_data})
+    if output:
+        return output
+    return output
 
 class AttendanceGroup(app_commands.Group):
 
@@ -153,6 +179,42 @@ class AttendanceGroup(app_commands.Group):
 
         # Mod log
         await interaction.client.get_guild(SERVER_750R).get_channel(CHANNEL_MODLOGS_750R).send(embed=embed)
+
+
+    @app_commands.command(name="penalties", description="shows the penalties of the person who used the command")
+    async def penalties(self, interaction):
+        """
+        Shows the penalties of the person who used the command.
+        """
+        # Look up the real name of the user from config.MEMBERS
+        global name
+        username = interaction.user.name
+        name = None
+        url = None
+
+        for member in MEMBERS:
+            if str(username) == str(member[0]):
+                name = member[1]
+                break
+
+                # If name is still None, the user is not a member of 750R
+        if name is None:
+            await interaction.response.send_message("You are not a member of 750R.", ephemeral=True)
+            return
+        else:
+            data = get_all_sheets(url)
+
+            # Error handling
+            if not data:
+                await interaction.response.send_message("Could not load attendance data. Please try again later.",
+                                                        ephemeral=True)
+                modlog_channel = interaction.client.get_guild(SERVER_750R).get_channel(CHANNEL_MODLOGS_750R)
+                await modlog_channel.send("Error: Attendance data could not be retrieved.")
+                return
+
+            # First column is the date, second column is the reason, third column is the penalty (posative is bad, negative is good)
+            # Set data to the array with the name of the user
+            print(data)
 
     # TODO: Add checkin and checkout commands
     @app_commands.command(name="checkin", description="check in to the meeting happening that day")

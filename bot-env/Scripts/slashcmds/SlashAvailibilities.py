@@ -51,6 +51,41 @@ class AvailibilitiesGroup(app_commands.Group):
         await interaction.client.get_guild(config.SERVER_750R).get_channel(config.CHANNEL_MODLOGS_750R).send(
             embed=embed)
 
+    @app_commands.command(name="set-description", description="Set the description for the availibilities message")
+    async def setDescription(self, interaction, message: str):
+        """
+        Sets the description for the availibilities message.
+
+        Parameters:
+        interaction (discord.Interaction): The interaction object.
+        message (str): The description for the availibilities message.
+
+        Returns:
+        None
+        """
+        # Permission Check
+        if not any(role.id == ROLE_ADMIN_750R for role in
+                   interaction.user.roles) and interaction.user.id != MEMBER_YEGNA_750R:
+            await interaction.response.send_message("You do not have permission to use this command.", ephemeral=True)
+            return
+
+        # Clear all data in assets\AvailibilitiesDescription.JSON and write the new data
+        with open(
+                r"assets\AvailibilitiesDescription.JSON",
+                "w") as file:
+            file.write(f'{{"description": "{message}"}}')
+
+        # Send a message to the modlogs channel
+        embed = discord.Embed(title=f'{discord.utils.escape_markdown(interaction.user.display_name)} Used /setDescription',
+                              color=discord.Color.gold())
+        embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.avatar.url)
+        embed.add_field(name="Description", value=f"{message}", inline=False)
+
+        await interaction.response.send_message(f"Set the description to: {message}", ephemeral=True)
+        await interaction.client.get_guild(config.SERVER_750R).get_channel(config.CHANNEL_MODLOGS_750R).send(
+            embed=embed) 
+    
+
 
 async def setup(client):
     client.tree.add_command(AvailibilitiesGroup(name="availbilities", description="availbilities commands"))
